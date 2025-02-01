@@ -30,7 +30,6 @@ export type ShipClass =
   | "Builder";
 
 export const ships: Ship[] = [
-  // Argon Federation Ships
   {
     id: "albatross_sentinel",
     name: "Albatross Sentinel",
@@ -130,7 +129,6 @@ export const ships: Ship[] = [
     speed: 317,
     manufacturer: "Generic"
   },
-  // Continue with more ships...
   {
     id: "atlas_e",
     name: "Atlas E",
@@ -141,6 +139,60 @@ export const ships: Ship[] = [
     cargo: 34040,
     speed: 110,
     manufacturer: "Paranid"
+  },
+  {
+    id: "atlas_sentinel",
+    name: "Atlas Sentinel",
+    class: "Resupply",
+    size: "XL",
+    price: 11_568_815,
+    crew: 205,
+    cargo: 34800,
+    speed: 114,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "atlas_vanguard",
+    name: "Atlas Vanguard",
+    class: "Resupply",
+    size: "XL",
+    price: 9_640_505,
+    crew: 247,
+    cargo: 29000,
+    speed: 130,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "barbarossa",
+    name: "Barbarossa",
+    class: "Transport",
+    size: "L",
+    price: 7_714_025,
+    crew: 126,
+    cargo: 21000,
+    speed: 194,
+    manufacturer: "Pirates"
+  },
+  {
+    id: "barracuda",
+    name: "Barracuda",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 245_690,
+    crew: 2,
+    cargo: 330,
+    speed: 123,
+    manufacturer: "Boron"
+  },
+  {
+    id: "behemoth_e",
+    name: "Behemoth E",
+    class: "Destroyer",
+    size: "L",
+    price: 6_250_830,
+    crew: 48,
+    cargo: 3100,
+    speed: 156,
+    manufacturer: "Argon Federation"
   }
-  // I'll continue adding more ships in subsequent updates to avoid making the response too long
 ];
