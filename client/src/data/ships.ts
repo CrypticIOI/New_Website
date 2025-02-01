@@ -1,4 +1,3 @@
-// Ship types and interface definitions
 export interface Ship {
   id: string;
   name: string;
@@ -249,5 +248,71 @@ export const ships: Ship[] = [
     cargo: 8800,
     speed: 247,
     manufacturer: "Terran Protectorate"
+  },
+  {
+    id: "buffalo",
+    name: "Buffalo",
+    class: "Transport",
+    size: "L",
+    price: 2_938_525,
+    crew: 59,
+    cargo: 16000,
+    speed: 215,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "buzzard_sentinel",
+    name: "Buzzard Sentinel",
+    class: "Fighter",
+    size: "S",
+    price: 190_320,
+    crew: 2,
+    cargo: 360,
+    speed: 134,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "buzzard_vanguard",
+    name: "Buzzard Vanguard",
+    class: "Fighter",
+    size: "S",
+    price: 157_850,
+    crew: 3,
+    cargo: 300,
+    speed: 144,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "callisto_sentinel",
+    name: "Callisto Sentinel",
+    class: "Transport",
+    size: "S",
+    price: 98_455,
+    crew: 2,
+    cargo: 1236,
+    speed: 141,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "callisto_vanguard",
+    name: "Callisto Vanguard",
+    class: "Transport",
+    size: "S",
+    price: 80_050,
+    crew: 3,
+    cargo: 1030,
+    speed: 153,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "cerberus_sentinel",
+    name: "Cerberus Sentinel",
+    class: "Frigate",
+    size: "M",
+    price: 1_145_000,
+    crew: 11,
+    cargo: 2112,
+    speed: 189,
+    manufacturer: "Argon Federation"
   }
 ];
