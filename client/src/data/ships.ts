@@ -490,5 +490,60 @@ export const ships: Ship[] = [
     cargo: 1960,
     speed: 215,
     manufacturer: "Argon Federation"
+  },
+  {
+    id: "crane_gas_sentinel",
+    name: "Crane (Gas) Sentinel",
+    class: "Miner",
+    size: "L",
+    price: 1_804_390,
+    crew: 43,
+    cargo: 52800,
+    speed: 131,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "crane_gas_vanguard",
+    name: "Crane (Gas) Vanguard",
+    class: "Miner",
+    size: "L",
+    price: 1_503_310,
+    crew: 52,
+    cargo: 44000,
+    speed: 146,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "crane_mineral_sentinel",
+    name: "Crane (Mineral) Sentinel",
+    class: "Miner",
+    size: "L",
+    price: 1_804_390,
+    crew: 43,
+    cargo: 57600,
+    speed: 131,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "crane_mineral_vanguard",
+    name: "Crane (Mineral) Vanguard",
+    class: "Miner",
+    size: "L",
+    price: 1_503_310,
+    crew: 52,
+    cargo: 48000,
+    speed: 146,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "crane_e_gas",
+    name: "Crane E (Gas)",
+    class: "Miner",
+    size: "L",
+    price: 1_922_187,
+    crew: 49,
+    cargo: 54000,
+    speed: 136,
+    manufacturer: "Teladi Company"
   }
 ];
