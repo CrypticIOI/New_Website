@@ -219,7 +219,7 @@ export const ships: Ship[] = [
     speed: 75,
     manufacturer: "Split Dynasty"
   },
-  {
+   {
     id: "raptor_raider",
     name: "Raptor Raider",
     class: "Scout",
@@ -230,8 +230,8 @@ export const ships: Ship[] = [
     speed: 255,
     manufacturer: "Split Dynasty"
   },
-
-  // Teladi Company Ships
+  
+    // Teladi Company Ships
   {
     id: "kestrel_vanguard",
     name: "Kestrel Vanguard",
@@ -344,7 +344,17 @@ export const ships: Ship[] = [
     speed: 60,
     manufacturer: "Terran"
   },
-
+   {
+    id: "tethy",
+    name: "Tethy",
+    class: "Corvette",
+    size: "M",
+    price: 925_000,
+    crew: 18,
+    cargo: 290,
+    speed: 175,
+    manufacturer: "Terran"
+  },
   // Mining Ships
   {
     id: "magnetar_miner",
@@ -1021,8 +1031,7 @@ export const ships: Ship[] = [
     class: "Scout",
     size: "S",
     price: 78_000,
-    crew: 2,
-    cargo: 48,
+    crew: 2,cargo: 48,
     speed: 265,
     manufacturer: "Boron"
   },
