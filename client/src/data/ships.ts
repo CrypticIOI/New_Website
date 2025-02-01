@@ -22,8 +22,9 @@ export type ShipClass =
   | "Miner";
 
 export const ships: Ship[] = [
+  // Argon Federation Ships
   {
-    id: "discoverer",
+    id: "discoverer_vanguard",
     name: "Discoverer Vanguard",
     class: "Scout",
     size: "S",
@@ -34,40 +35,18 @@ export const ships: Ship[] = [
     manufacturer: "Argon Federation"
   },
   {
-    id: "eclipse",
-    name: "Eclipse Vanguard",
+    id: "elite_vanguard",
+    name: "Elite Vanguard",
     class: "Fighter",
     size: "S",
-    price: 147_651,
-    crew: 2,
-    cargo: 25,
-    speed: 265,
-    manufacturer: "Paranid"
-  },
-  {
-    id: "nova",
-    name: "Nova Raider",
-    class: "Heavy Fighter",
-    size: "S",
-    price: 198_450,
+    price: 142_500,
     crew: 2,
     cargo: 30,
-    speed: 235,
-    manufacturer: "Split Dynasty"
+    speed: 260,
+    manufacturer: "Argon Federation"
   },
   {
-    id: "pegasus",
-    name: "Pegasus Sentinel",
-    class: "Corvette",
-    size: "M",
-    price: 892_750,
-    crew: 15,
-    cargo: 250,
-    speed: 175,
-    manufacturer: "Teladi Company"
-  },
-  {
-    id: "cerberus",
+    id: "cerberus_sentinel",
     name: "Cerberus Sentinel",
     class: "Frigate",
     size: "M",
@@ -78,7 +57,53 @@ export const ships: Ship[] = [
     manufacturer: "Argon Federation"
   },
   {
-    id: "nemesis",
+    id: "behemoth_vanguard",
+    name: "Behemoth Vanguard",
+    class: "Destroyer",
+    size: "L",
+    price: 4_950_000,
+    crew: 80,
+    cargo: 1200,
+    speed: 90,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "colossus_vanguard",
+    name: "Colossus Vanguard",
+    class: "Carrier",
+    size: "XL",
+    price: 11_850_000,
+    crew: 340,
+    cargo: 2400,
+    speed: 70,
+    manufacturer: "Argon Federation"
+  },
+
+  // Paranid Ships
+  {
+    id: "perseus_vanguard",
+    name: "Perseus Vanguard",
+    class: "Scout",
+    size: "S",
+    price: 78_500,
+    crew: 2,
+    cargo: 45,
+    speed: 250,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "eclipse_vanguard",
+    name: "Eclipse Vanguard",
+    class: "Fighter",
+    size: "S",
+    price: 147_651,
+    crew: 2,
+    cargo: 25,
+    speed: 265,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "nemesis_vanguard",
     name: "Nemesis Vanguard",
     class: "Destroyer",
     size: "L",
@@ -88,8 +113,43 @@ export const ships: Ship[] = [
     speed: 95,
     manufacturer: "Paranid"
   },
+
+  // Split Dynasty Ships
   {
-    id: "phoenix",
+    id: "nova_raider",
+    name: "Nova Raider",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 198_450,
+    crew: 2,
+    cargo: 30,
+    speed: 235,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "dragon_raider",
+    name: "Dragon Raider",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 212_750,
+    crew: 2,
+    cargo: 35,
+    speed: 225,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "tiger_raider",
+    name: "Tiger Raider",
+    class: "Corvette",
+    size: "M",
+    price: 950_000,
+    crew: 18,
+    cargo: 280,
+    speed: 180,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "phoenix_carrier",
     name: "Phoenix Carrier",
     class: "Carrier",
     size: "XL",
@@ -99,8 +159,32 @@ export const ships: Ship[] = [
     speed: 75,
     manufacturer: "Split Dynasty"
   },
+
+  // Teladi Company Ships
   {
-    id: "mercury",
+    id: "kestrel_vanguard",
+    name: "Kestrel Vanguard",
+    class: "Scout",
+    size: "S",
+    price: 72_000,
+    crew: 2,
+    cargo: 55,
+    speed: 240,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "pegasus_sentinel",
+    name: "Pegasus Sentinel",
+    class: "Corvette",
+    size: "M",
+    price: 892_750,
+    crew: 15,
+    cargo: 250,
+    speed: 175,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "mercury_hauler",
     name: "Mercury Hauler",
     class: "Trader",
     size: "M",
@@ -111,7 +195,20 @@ export const ships: Ship[] = [
     manufacturer: "Teladi Company"
   },
   {
-    id: "magnetar",
+    id: "vulture_hauler",
+    name: "Vulture Hauler",
+    class: "Trader",
+    size: "L",
+    price: 2_850_000,
+    crew: 25,
+    cargo: 6500,
+    speed: 120,
+    manufacturer: "Teladi Company"
+  },
+
+  // Mining Ships
+  {
+    id: "magnetar_miner",
     name: "Magnetar Miner",
     class: "Miner",
     size: "M",
@@ -122,36 +219,25 @@ export const ships: Ship[] = [
     manufacturer: "Argon Federation"
   },
   {
-    id: "raptor",
-    name: "Raptor Scout",
-    class: "Scout",
-    size: "S",
-    price: 82_450,
-    crew: 1,
-    cargo: 45,
-    speed: 255,
-    manufacturer: "Split Dynasty"
+    id: "pulsar_miner",
+    name: "Pulsar Miner",
+    class: "Miner",
+    size: "L",
+    price: 2_450_000,
+    crew: 35,
+    cargo: 7500,
+    speed: 110,
+    manufacturer: "Paranid"
   },
   {
-    id: "hawk",
-    name: "Hawk Fighter",
-    class: "Fighter",
-    size: "S",
-    price: 156_800,
-    crew: 2,
-    cargo: 20,
-    speed: 275,
-    manufacturer: "Argon Federation"
-  },
-  {
-    id: "dragon",
-    name: "Dragon Raider",
-    class: "Heavy Fighter",
-    size: "S",
-    price: 212_750,
-    crew: 2,
-    cargo: 35,
-    speed: 225,
+    id: "quasar_miner",
+    name: "Quasar Miner",
+    class: "Miner",
+    size: "M",
+    price: 395_000,
+    crew: 15,
+    cargo: 2400,
+    speed: 130,
     manufacturer: "Split Dynasty"
   }
 ];
