@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { useMemo, useState, useCallback } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 const shipClasses: ShipClass[] = [
@@ -31,11 +30,6 @@ const shipClasses: ShipClass[] = [
 // Number of items to show per page
 const ITEMS_PER_PAGE = 20;
 
-type NumericFilter = {
-  min: number;
-  max: number;
-};
-
 type SortField = "price" | "crew" | "cargo" | "speed";
 type SortDirection = "asc" | "desc";
 
@@ -49,44 +43,11 @@ export function ShipTable() {
   const [selectedClass, setSelectedClass] = useState<ShipClass | "all">("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedManufacturer, setSelectedManufacturer] = useState<string>("all");
-  const [priceRange, setPriceRange] = useState<NumericFilter>({ min: 0, max: Infinity });
-  const [crewRange, setCrewRange] = useState<NumericFilter>({ min: 0, max: Infinity });
-  const [cargoRange, setCargoRange] = useState<NumericFilter>({ min: 0, max: Infinity });
-  const [speedRange, setSpeedRange] = useState<NumericFilter>({ min: 0, max: Infinity });
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: null, direction: "asc" });
 
   // Get unique manufacturers
   const manufacturers = useMemo(() => {
     return [...new Set(ships.map(ship => ship.manufacturer))].sort();
-  }, []);
-
-  // Get ranges for numeric values
-  const ranges = useMemo(() => {
-    return ships.reduce((acc, ship) => {
-      return {
-        price: {
-          min: Math.min(acc.price.min, ship.price),
-          max: Math.max(acc.price.max, ship.price)
-        },
-        crew: {
-          min: Math.min(acc.crew.min, ship.crew),
-          max: Math.max(acc.crew.max, ship.crew)
-        },
-        cargo: {
-          min: Math.min(acc.cargo.min, ship.cargo),
-          max: Math.max(acc.cargo.max, ship.cargo)
-        },
-        speed: {
-          min: Math.min(acc.speed.min, ship.speed),
-          max: Math.max(acc.speed.max, ship.speed)
-        }
-      };
-    }, {
-      price: { min: Infinity, max: -Infinity },
-      crew: { min: Infinity, max: -Infinity },
-      cargo: { min: Infinity, max: -Infinity },
-      speed: { min: Infinity, max: -Infinity }
-    });
   }, []);
 
   // Memoize filtered and sorted ships
@@ -96,13 +57,8 @@ export function ShipTable() {
                           ship.manufacturer.toLowerCase().includes(search.toLowerCase());
       const matchesClass = selectedClass === "all" || ship.class === selectedClass;
       const matchesManufacturer = selectedManufacturer === "all" || ship.manufacturer === selectedManufacturer;
-      const matchesPrice = ship.price >= priceRange.min && ship.price <= priceRange.max;
-      const matchesCrew = ship.crew >= crewRange.min && ship.crew <= crewRange.max;
-      const matchesCargo = ship.cargo >= cargoRange.min && ship.cargo <= cargoRange.max;
-      const matchesSpeed = ship.speed >= speedRange.min && ship.speed <= speedRange.max;
 
-      return matchesSearch && matchesClass && matchesManufacturer && 
-             matchesPrice && matchesCrew && matchesCargo && matchesSpeed;
+      return matchesSearch && matchesClass && matchesManufacturer;
     });
 
     // Sort if a sort field is selected
@@ -120,7 +76,7 @@ export function ShipTable() {
     }
 
     return filtered;
-  }, [search, selectedClass, selectedManufacturer, priceRange, crewRange, cargoRange, speedRange, sortConfig]);
+  }, [search, selectedClass, selectedManufacturer, sortConfig]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
@@ -129,19 +85,6 @@ export function ShipTable() {
 
   // Reset page when filters change
   const resetPage = useCallback(() => setCurrentPage(1), []);
-
-  // Handler for numeric range inputs
-  const handleRangeChange = (
-    setter: (range: NumericFilter) => void,
-    value: number,
-    isMin: boolean
-  ) => {
-    setter(prev => ({
-      min: isMin ? value : prev.min,
-      max: isMin ? prev.max : value
-    }));
-    resetPage();
-  };
 
   // Handler for sorting
   const handleSort = (field: SortField) => {
@@ -205,93 +148,6 @@ export function ShipTable() {
               ))}
             </SelectContent>
           </Select>
-        </div>
-      </div>
-
-      {/* Numeric Filters */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {/* Price Range */}
-        <div className="space-y-2">
-          <Label className="text-white">Price Range</Label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Min"
-              className="bg-white/5 border-white/10 text-white"
-              value={priceRange.min}
-              onChange={(e) => handleRangeChange(setPriceRange, Number(e.target.value), true)}
-            />
-            <Input
-              type="number"
-              placeholder="Max"
-              className="bg-white/5 border-white/10 text-white"
-              value={priceRange.max === Infinity ? "" : priceRange.max}
-              onChange={(e) => handleRangeChange(setPriceRange, Number(e.target.value) || Infinity, false)}
-            />
-          </div>
-        </div>
-
-        {/* Crew Range */}
-        <div className="space-y-2">
-          <Label className="text-white">Crew Size</Label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Min"
-              className="bg-white/5 border-white/10 text-white"
-              value={crewRange.min}
-              onChange={(e) => handleRangeChange(setCrewRange, Number(e.target.value), true)}
-            />
-            <Input
-              type="number"
-              placeholder="Max"
-              className="bg-white/5 border-white/10 text-white"
-              value={crewRange.max === Infinity ? "" : crewRange.max}
-              onChange={(e) => handleRangeChange(setCrewRange, Number(e.target.value) || Infinity, false)}
-            />
-          </div>
-        </div>
-
-        {/* Cargo Range */}
-        <div className="space-y-2">
-          <Label className="text-white">Cargo Capacity</Label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Min"
-              className="bg-white/5 border-white/10 text-white"
-              value={cargoRange.min}
-              onChange={(e) => handleRangeChange(setCargoRange, Number(e.target.value), true)}
-            />
-            <Input
-              type="number"
-              placeholder="Max"
-              className="bg-white/5 border-white/10 text-white"
-              value={cargoRange.max === Infinity ? "" : cargoRange.max}
-              onChange={(e) => handleRangeChange(setCargoRange, Number(e.target.value) || Infinity, false)}
-            />
-          </div>
-        </div>
-
-        {/* Speed Range */}
-        <div className="space-y-2">
-          <Label className="text-white">Speed</Label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Min"
-              className="bg-white/5 border-white/10 text-white"
-              value={speedRange.min}
-              onChange={(e) => handleRangeChange(setSpeedRange, Number(e.target.value), true)}
-            />
-            <Input
-              type="number"
-              placeholder="Max"
-              className="bg-white/5 border-white/10 text-white"
-              value={speedRange.max === Infinity ? "" : speedRange.max}
-              onChange={(e) => handleRangeChange(setSpeedRange, Number(e.target.value) || Infinity, false)}
-            />
-          </div>
         </div>
       </div>
 
