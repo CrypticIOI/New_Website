@@ -2,16 +2,14 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { useMemo, useState, useCallback } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ShipTableHeader, type SortConfig, type SortField } from "./ship-table-header";
+import { ShipFilters } from "./ship-filters";
+
+const ITEMS_PER_PAGE = 25;
 
 const shipClasses: ShipClass[] = [
   "Scout",
@@ -28,17 +26,6 @@ const shipClasses: ShipClass[] = [
   "Auxiliary"
 ];
 
-// Increased items per page for better browsing
-const ITEMS_PER_PAGE = 25;
-
-type SortField = "price" | "crew" | "cargo" | "speed";
-type SortDirection = "asc" | "desc";
-
-type SortConfig = {
-  field: SortField | null;
-  direction: SortDirection;
-};
-
 export function ShipTable() {
   const [search, setSearch] = useState("");
   const [selectedClass, setSelectedClass] = useState<ShipClass | "all">("all");
@@ -52,30 +39,32 @@ export function ShipTable() {
     return Array.from(new Set(ships.map(ship => ship.manufacturer))).sort();
   }, []);
 
+  // Memoize filter function
+  const filterShip = useCallback((ship: Ship) => {
+    const matchesSearch = 
+      ship.name.toLowerCase().includes(search.toLowerCase()) ||
+      ship.manufacturer.toLowerCase().includes(search.toLowerCase());
+    const matchesClass = selectedClass === "all" || ship.class === selectedClass;
+    const matchesManufacturer = selectedManufacturer === "all" || ship.manufacturer === selectedManufacturer;
+    const passesNPCFilter = !excludeNPCShips || 
+      (ship.manufacturer !== "Xenon" && ship.manufacturer !== "Kha'ak");
+
+    return matchesSearch && matchesClass && matchesManufacturer && passesNPCFilter;
+  }, [search, selectedClass, selectedManufacturer, excludeNPCShips]);
+
+  // Memoize sort function
+  const sortShips = useCallback((a: Ship, b: Ship) => {
+    if (!sortConfig.field) return 0;
+    const aValue = a[sortConfig.field];
+    const bValue = b[sortConfig.field];
+    return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
+  }, [sortConfig]);
+
   // Memoize filtered and sorted ships
   const filteredAndSortedShips = useMemo(() => {
-    let filtered = ships.filter(ship => {
-      const matchesSearch = ship.name.toLowerCase().includes(search.toLowerCase()) ||
-                          ship.manufacturer.toLowerCase().includes(search.toLowerCase());
-      const matchesClass = selectedClass === "all" || ship.class === selectedClass;
-      const matchesManufacturer = selectedManufacturer === "all" || ship.manufacturer === selectedManufacturer;
-      const passesNPCFilter = !excludeNPCShips || 
-                            (ship.manufacturer !== "Xenon" && ship.manufacturer !== "Kha'ak");
-
-      return matchesSearch && matchesClass && matchesManufacturer && passesNPCFilter;
-    });
-
-    // Sort if a sort field is selected
-    if (sortConfig.field) {
-      filtered.sort((a, b) => {
-        const aValue = a[sortConfig.field!];
-        const bValue = b[sortConfig.field!];
-        return sortConfig.direction === "asc" ? aValue - bValue : bValue - aValue;
-      });
-    }
-
-    return filtered;
-  }, [search, selectedClass, selectedManufacturer, sortConfig, excludeNPCShips]);
+    const filtered = ships.filter(filterShip);
+    return sortConfig.field ? [...filtered].sort(sortShips) : filtered;
+  }, [filterShip, sortConfig, sortShips]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
@@ -92,140 +81,52 @@ export function ShipTable() {
       direction: prev.field === field && prev.direction === "asc" ? "desc" : "asc"
     }));
     resetPage();
-  }, []);
+  }, [resetPage]);
 
-  // Function to render sort indicator (memoized)
-  const getSortIcon = useCallback((field: SortField) => {
-    if (sortConfig.field !== field) {
-      return <ArrowUpDown className="ml-2 h-4 w-4" />;
-    }
-    return sortConfig.direction === "asc" ? 
-      <ArrowUp className="ml-2 h-4 w-4" /> : 
-      <ArrowDown className="ml-2 h-4 w-4" />;
-  }, [sortConfig]);
+  // Handlers for filter changes
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    resetPage();
+  }, [resetPage]);
+
+  const handleClassChange = useCallback((value: ShipClass | "all") => {
+    setSelectedClass(value);
+    resetPage();
+  }, [resetPage]);
+
+  const handleManufacturerChange = useCallback((value: string) => {
+    setSelectedManufacturer(value);
+    resetPage();
+  }, [resetPage]);
+
+  const handleExcludeNPCChange = useCallback((value: boolean) => {
+    setExcludeNPCShips(value);
+    resetPage();
+  }, [resetPage]);
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2">
-        <Input
-          placeholder="Search ships or manufacturers..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            resetPage();
-          }}
-          className="max-w-sm bg-white/5 border-white/10 text-white placeholder:text-white/50"
-        />
-        <div className="flex gap-4">
-          <Select value={selectedClass} onValueChange={(value) => {
-            setSelectedClass(value as ShipClass | "all");
-            resetPage();
-          }}>
-            <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
-              <SelectValue placeholder="Select class" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All classes</SelectItem>
-              {shipClasses.map(cls => (
-                <SelectItem key={cls} value={cls}>{cls}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedManufacturer} onValueChange={(value) => {
-            setSelectedManufacturer(value);
-            resetPage();
-          }}>
-            <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
-              <SelectValue placeholder="Select manufacturer" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All manufacturers</SelectItem>
-              {manufacturers.map(manufacturer => (
-                <SelectItem key={manufacturer} value={manufacturer}>{manufacturer}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* NPC Ships Filter */}
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id="exclude-npc"
-          checked={excludeNPCShips}
-          onCheckedChange={(checked) => {
-            setExcludeNPCShips(checked as boolean);
-            resetPage();
-          }}
-          className="bg-white/5 border-white/10"
-        />
-        <label
-          htmlFor="exclude-npc"
-          className="text-sm font-medium text-white cursor-pointer"
-        >
-          Exclude Xenon and Kha'ak ships
-        </label>
-      </div>
-
-      {/* Filter Summary */}
-      <div className="flex items-center h-8 text-sm">
-        <div className="text-primary font-medium">
-          {filteredAndSortedShips.length.toLocaleString()} ships found
-          {selectedClass !== "all" && ` • Class: ${selectedClass}`}
-          {selectedManufacturer !== "all" && ` • Manufacturer: ${selectedManufacturer}`}
-          {search && ` • Search: "${search}"`}
-          {excludeNPCShips && ` • Excluding NPC ships`}
-        </div>
-      </div>
+      <ShipFilters
+        search={search}
+        onSearchChange={handleSearchChange}
+        selectedClass={selectedClass}
+        onClassChange={handleClassChange}
+        selectedManufacturer={selectedManufacturer}
+        onManufacturerChange={handleManufacturerChange}
+        excludeNPCShips={excludeNPCShips}
+        onExcludeNPCChange={handleExcludeNPCChange}
+        manufacturers={manufacturers}
+        shipClasses={shipClasses}
+        totalShips={filteredAndSortedShips.length}
+      />
 
       {/* Ship Table */}
       <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
         <Table>
-          <TableHeader>
-            <TableRow className="border-b border-white/10">
-              <TableHead className="text-white/70">Name</TableHead>
-              <TableHead className="text-white/70">Class</TableHead>
-              <TableHead className="text-white/70">Size</TableHead>
-              <TableHead 
-                className="text-white/70 text-right cursor-pointer select-none"
-                onClick={() => handleSort("price")}
-              >
-                <div className="flex items-center justify-end">
-                  Price
-                  {getSortIcon("price")}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="text-white/70 text-right cursor-pointer select-none"
-                onClick={() => handleSort("crew")}
-              >
-                <div className="flex items-center justify-end">
-                  Crew
-                  {getSortIcon("crew")}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="text-white/70 text-right cursor-pointer select-none"
-                onClick={() => handleSort("cargo")}
-              >
-                <div className="flex items-center justify-end">
-                  Cargo
-                  {getSortIcon("cargo")}
-                </div>
-              </TableHead>
-              <TableHead 
-                className="text-white/70 text-right cursor-pointer select-none"
-                onClick={() => handleSort("speed")}
-              >
-                <div className="flex items-center justify-end">
-                  Speed
-                  {getSortIcon("speed")}
-                </div>
-              </TableHead>
-              <TableHead className="text-white/70">Manufacturer</TableHead>
-            </TableRow>
-          </TableHeader>
+          <ShipTableHeader 
+            sortConfig={sortConfig}
+            onSort={handleSort}
+          />
           <TableBody>
             {paginatedShips.map((ship) => (
               <TableRow 
