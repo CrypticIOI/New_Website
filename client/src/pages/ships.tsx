@@ -1,33 +1,14 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo } from "react";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowUpDown, ArrowUp, ArrowDown, Loader2 } from "lucide-react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Filter, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-
-const ROW_HEIGHT = 48;
-const TABLE_HEIGHT = 600;
-
-const COLUMNS = [
-  { key: 'name', label: 'Name', width: 240, align: 'left', sortable: false },
-  { key: 'class', label: 'Class', width: 180, align: 'left', sortable: false },
-  { key: 'size', label: 'Size', width: 120, align: 'left', sortable: false },
-  { key: 'price', label: 'Price', width: 144, align: 'right', sortable: true },
-  { key: 'crew', label: 'Crew', width: 120, align: 'right', sortable: true },
-  { key: 'cargo', label: 'Cargo', width: 144, align: 'right', sortable: true },
-  { key: 'speed', label: 'Speed', width: 120, align: 'right', sortable: true },
-  { key: 'manufacturer', label: 'Manufacturer', width: 132, align: 'left', sortable: false },
-];
 
 const shipClasses: ShipClass[] = [
   "Scout", "Fighter", "Heavy Fighter", "Corvette", "Frigate", 
@@ -49,8 +30,7 @@ export default function Ships() {
     direction: "asc" 
   });
   const [excludeNPCShips, setExcludeNPCShips] = useState(false);
-
-  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Simulate loading state
   useState(() => {
@@ -101,199 +81,239 @@ export default function Ships() {
     }
   }, [search, selectedClass, selectedManufacturer, sortConfig, excludeNPCShips, isLoading]);
 
-  // Virtual row handling
-  const rowVirtualizer = useVirtualizer({
-    count: filteredAndSortedShips.length,
-    getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => ROW_HEIGHT,
-    overscan: 5,
-  });
-
-  // Handle sort
-  const handleSort = useCallback((field: SortField) => {
-    setSortConfig(prev => ({
-      field,
-      direction: prev.field === field && prev.direction === "asc" ? "desc" : "asc"
-    }));
-  }, []);
-
-  // Sort indicator
-  const getSortIcon = (field: string) => {
-    if (sortConfig.field !== field) {
-      return <ArrowUpDown className="ml-2 h-4 w-4" />;
-    }
-    return sortConfig.direction === "asc" ? 
-      <ArrowUp className="ml-2 h-4 w-4" /> : 
-      <ArrowDown className="ml-2 h-4 w-4" />;
+  // Clear all filters
+  const clearFilters = () => {
+    setSearch("");
+    setSelectedClass("all");
+    setSelectedManufacturer("all");
+    setExcludeNPCShips(false);
+    setSortConfig({ field: null, direction: "asc" });
   };
 
+  // Active filters count
+  const activeFiltersCount = [
+    search !== "",
+    selectedClass !== "all",
+    selectedManufacturer !== "all",
+    excludeNPCShips,
+    sortConfig.field !== null,
+  ].filter(Boolean).length;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-white">Ships Database</h1>
         <p className="text-white/80">
           Browse and compare ships available in X4: Foundations
         </p>
-        <div className="text-sm text-primary/80">
-          Total ships in database: {ships.length}
-        </div>
       </div>
 
+      {/* Search and Filters */}
       <div className="space-y-4">
-        {/* Filters */}
-        <div className="grid gap-4 md:grid-cols-2" role="search">
-          <Input
-            placeholder="Search ships or manufacturers..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="max-w-sm bg-white/5 border-white/10 text-white placeholder:text-white/50"
-            aria-label="Search ships or manufacturers"
-          />
-          <div className="flex gap-4">
-            <Select 
-              value={selectedClass} 
-              onValueChange={(value) => setSelectedClass(value as ShipClass | "all")}
-            >
-              <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white" aria-label="Filter by ship class">
-                <SelectValue placeholder="Select class" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All classes</SelectItem>
-                {shipClasses.map(cls => (
-                  <SelectItem key={cls} value={cls}>{cls}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select 
-              value={selectedManufacturer} 
-              onValueChange={setSelectedManufacturer}
-            >
-              <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white" aria-label="Filter by manufacturer">
-                <SelectValue placeholder="Select manufacturer" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All manufacturers</SelectItem>
-                {manufacturers.map(manufacturer => (
-                  <SelectItem key={manufacturer} value={manufacturer}>
-                    {manufacturer}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="relative flex-1 min-w-[300px]">
+            <Input
+              placeholder="Search ships or manufacturers..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/50 pr-10"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
+          <Button
+            variant={showFilters ? "secondary" : "outline"}
+            className="gap-2"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className="h-4 w-4" />
+            Filters
+            {activeFiltersCount > 0 && (
+              <Badge variant="secondary" className="ml-1">
+                {activeFiltersCount}
+              </Badge>
+            )}
+          </Button>
+          {activeFiltersCount > 0 && (
+            <Button
+              variant="ghost"
+              className="text-sm text-primary/80 hover:text-primary"
+              onClick={clearFilters}
+            >
+              Clear all
+            </Button>
+          )}
         </div>
 
-        {/* NPC Ships Filter */}
-        <div className="flex items-center space-x-2">
-          <Checkbox
-            id="exclude-npc"
-            checked={excludeNPCShips}
-            onCheckedChange={(checked) => setExcludeNPCShips(checked as boolean)}
-            className="bg-white/5 border-white/10"
-          />
-          <label
-            htmlFor="exclude-npc"
-            className="text-sm font-medium text-white cursor-pointer"
-          >
-            Exclude Xenon and Kha'ak ships
-          </label>
-        </div>
+        {/* Expanded Filters */}
+        <AnimatePresence>
+          {showFilters && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="space-y-4 overflow-hidden"
+            >
+              <div className="grid gap-4 md:grid-cols-2">
+                <Select 
+                  value={selectedClass} 
+                  onValueChange={(value) => setSelectedClass(value as ShipClass | "all")}
+                >
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue placeholder="Filter by class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All classes</SelectItem>
+                    {shipClasses.map(cls => (
+                      <SelectItem key={cls} value={cls}>{cls}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select 
+                  value={selectedManufacturer} 
+                  onValueChange={setSelectedManufacturer}
+                >
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue placeholder="Filter by manufacturer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All manufacturers</SelectItem>
+                    {manufacturers.map(manufacturer => (
+                      <SelectItem key={manufacturer} value={manufacturer}>
+                        {manufacturer}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="exclude-npc"
+                  checked={excludeNPCShips}
+                  onCheckedChange={(checked) => setExcludeNPCShips(checked as boolean)}
+                  className="bg-white/5 border-white/10"
+                />
+                <label
+                  htmlFor="exclude-npc"
+                  className="text-sm font-medium text-white cursor-pointer"
+                >
+                  Exclude Xenon and Kha'ak ships
+                </label>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Filter Summary */}
-        <div className="flex items-center h-8 text-sm">
-          <div className="text-primary font-medium">
-            {filteredAndSortedShips.length.toLocaleString()} ships found
-            {selectedClass !== "all" && ` • Class: ${selectedClass}`}
-            {selectedManufacturer !== "all" && ` • Manufacturer: ${selectedManufacturer}`}
-            {search && ` • Search: "${search}"`}
-            {excludeNPCShips && ` • Excluding NPC ships`}
-          </div>
+        <div className="flex flex-wrap items-center gap-2 min-h-8 text-sm">
+          <span className="text-primary font-medium">
+            {filteredAndSortedShips.length} ships found
+          </span>
+          {(selectedClass !== "all" || selectedManufacturer !== "all" || search || excludeNPCShips) && (
+            <>
+              <span className="text-white/50">•</span>
+              <div className="flex flex-wrap gap-2">
+                {selectedClass !== "all" && (
+                  <Badge variant="secondary" className="gap-1">
+                    {selectedClass}
+                    <button onClick={() => setSelectedClass("all")}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+                {selectedManufacturer !== "all" && (
+                  <Badge variant="secondary" className="gap-1">
+                    {selectedManufacturer}
+                    <button onClick={() => setSelectedManufacturer("all")}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+                {search && (
+                  <Badge variant="secondary" className="gap-1">
+                    Search: {search}
+                    <button onClick={() => setSearch("")}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+                {excludeNPCShips && (
+                  <Badge variant="secondary" className="gap-1">
+                    No NPC Ships
+                    <button onClick={() => setExcludeNPCShips(false)}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                )}
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Ship Table */}
-        <div className="overflow-hidden rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
-          <div
-            ref={tableContainerRef}
-            className="relative"
-            style={{ height: TABLE_HEIGHT }}
-          >
-            <Table>
-              <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
-                <TableRow className="border-b border-white/10">
-                  {COLUMNS.map(column => (
-                    <TableHead
-                      key={column.key}
-                      className={`text-white/70 ${column.sortable ? 'cursor-pointer select-none' : ''}`}
-                      style={{
-                        width: column.width,
-                        padding: '12px 16px',
-                      }}
-                      onClick={() => column.sortable && handleSort(column.key as SortField)}
-                    >
-                      <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : ''}`}>
-                        {column.label}
-                        {column.sortable && getSortIcon(column.key)}
+        {/* Ships Grid */}
+        <div className="relative min-h-[400px]">
+          {isLoading ? (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredAndSortedShips.map((ship) => (
+                <motion.div
+                  key={ship.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="group"
+                >
+                  <Card className="relative overflow-hidden border-white/10 bg-black/40 backdrop-blur-sm hover:bg-white/5 transition-colors">
+                    <div className="p-4 space-y-3">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold text-white group-hover:text-primary transition-colors">
+                          {ship.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm text-white/70">
+                          <span>{ship.manufacturer}</span>
+                          <span className="text-white/30">•</span>
+                          <span>{ship.class}</span>
+                        </div>
                       </div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={COLUMNS.length}
-                      className="h-[400px] text-center"
-                    >
-                      <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  <div
-                    style={{
-                      height: rowVirtualizer.getTotalSize(),
-                      position: 'relative',
-                      width: '100%',
-                    }}
-                  >
-                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                      const ship = filteredAndSortedShips[virtualRow.index];
-                      return (
-                        <TableRow
-                          key={ship.id}
-                          className="absolute top-0 left-0 border-b border-white/10"
-                          style={{
-                            height: ROW_HEIGHT,
-                            transform: `translateY(${virtualRow.start}px)`,
-                            width: '100%',
-                          }}
-                        >
-                          {COLUMNS.map(column => (
-                            <TableCell
-                              key={column.key}
-                              className="text-primary/90"
-                              style={{
-                                width: column.width,
-                                padding: '12px 16px',
-                                textAlign: column.align,
-                              }}
-                            >
-                              {column.key === 'price' && ship.price === 0
-                                ? 'N/A'
-                                : column.key === 'price'
-                                ? ship[column.key].toLocaleString()
-                                : ship[column.key as keyof Ship]}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      );
-                    })}
-                  </div>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div className="space-y-1">
+                          <div className="text-white/50">Price</div>
+                          <div className="font-medium text-white">
+                            {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-white/50">Crew</div>
+                          <div className="font-medium text-white">{ship.crew}</div>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-white/50">Cargo</div>
+                          <div className="font-medium text-white">{ship.cargo}</div>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-white/50">Speed</div>
+                          <div className="font-medium text-white">{ship.speed}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
