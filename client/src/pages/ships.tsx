@@ -118,7 +118,7 @@ export default function Ships() {
   }, []);
 
   // Sort indicator
-  const getSortIcon = (field: SortField) => {
+  const getSortIcon = (field: string) => {
     if (sortConfig.field !== field) {
       return <ArrowUpDown className="ml-2 h-4 w-4" />;
     }
@@ -126,9 +126,6 @@ export default function Ships() {
       <ArrowUp className="ml-2 h-4 w-4" /> : 
       <ArrowDown className="ml-2 h-4 w-4" />;
   };
-
-  // Calculate total table width
-  const totalWidth = COLUMNS.reduce((acc, col) => acc + col.width, 0);
 
   return (
     <div className="space-y-6">
@@ -215,49 +212,28 @@ export default function Ships() {
         </div>
 
         {/* Ship Table */}
-        <div 
-          ref={tableContainerRef}
-          className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm"
-          style={{ height: TABLE_HEIGHT, overflowY: "auto" }}
-        >
-          <div style={{ width: totalWidth, minWidth: '100%' }}>
-            <Table aria-label="Ships database">
+        <div className="overflow-hidden rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
+          <div
+            ref={tableContainerRef}
+            className="relative"
+            style={{ height: TABLE_HEIGHT }}
+          >
+            <Table>
               <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
                 <TableRow className="border-b border-white/10">
                   {COLUMNS.map(column => (
-                    <TableHead 
+                    <TableHead
                       key={column.key}
-                      className="text-white/70"
-                      style={{ 
+                      className={`text-white/70 ${column.sortable ? 'cursor-pointer select-none' : ''}`}
+                      style={{
                         width: column.width,
-                        textAlign: column.align as any,
-                        cursor: column.sortable ? 'pointer' : 'default',
                         padding: '12px 16px',
                       }}
-                      onClick={() => {
-                        if (column.sortable) {
-                          handleSort(column.key as SortField);
-                        }
-                      }}
-                      role={column.sortable ? "button" : undefined}
-                      tabIndex={column.sortable ? 0 : undefined}
-                      onKeyDown={(e) => {
-                        if (column.sortable && (e.key === 'Enter' || e.key === ' ')) {
-                          e.preventDefault();
-                          handleSort(column.key as SortField);
-                        }
-                      }}
-                      aria-sort={
-                        column.sortable
-                          ? sortConfig.field === column.key
-                            ? sortConfig.direction === 'asc' ? 'ascending' : 'descending'
-                            : 'none'
-                          : undefined
-                      }
+                      onClick={() => column.sortable && handleSort(column.key as SortField)}
                     >
                       <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : ''}`}>
                         {column.label}
-                        {column.sortable && getSortIcon(column.key as SortField)}
+                        {column.sortable && getSortIcon(column.key)}
                       </div>
                     </TableHead>
                   ))}
@@ -265,61 +241,55 @@ export default function Ships() {
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <tr>
-                    <td colSpan={8} className="h-[400px]">
-                      <div className="flex items-center justify-center h-full">
-                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                      </div>
-                    </td>
-                  </tr>
+                  <TableRow>
+                    <TableCell
+                      colSpan={COLUMNS.length}
+                      className="h-[400px] text-center"
+                    >
+                      <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+                    </TableCell>
+                  </TableRow>
                 ) : (
-                  <tr>
-                    <td colSpan={8} className="p-0">
-                      <div 
-                        style={{ 
-                          height: `${rowVirtualizer.getTotalSize()}px`,
-                          width: '100%',
-                          position: 'relative'
-                        }}
-                      >
-                        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                          const ship = filteredAndSortedShips[virtualRow.index];
-                          return (
-                            <TableRow
-                              key={ship.id}
-                              className="border-b border-white/10 transition-colors hover:bg-white/5"
+                  <div
+                    style={{
+                      height: rowVirtualizer.getTotalSize(),
+                      position: 'relative',
+                      width: '100%',
+                    }}
+                  >
+                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const ship = filteredAndSortedShips[virtualRow.index];
+                      return (
+                        <TableRow
+                          key={ship.id}
+                          className="absolute top-0 left-0 border-b border-white/10"
+                          style={{
+                            height: ROW_HEIGHT,
+                            transform: `translateY(${virtualRow.start}px)`,
+                            width: '100%',
+                          }}
+                        >
+                          {COLUMNS.map(column => (
+                            <TableCell
+                              key={column.key}
+                              className="text-primary/90"
                               style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: `${ROW_HEIGHT}px`,
-                                transform: `translateY(${virtualRow.start}px)`,
+                                width: column.width,
+                                padding: '12px 16px',
+                                textAlign: column.align,
                               }}
                             >
-                              {COLUMNS.map((column) => (
-                                <TableCell
-                                  key={column.key}
-                                  style={{ 
-                                    width: column.width,
-                                    padding: '12px 16px',
-                                    textAlign: column.align as any
-                                  }}
-                                  className="text-primary/90"
-                                >
-                                  {column.key === 'price' 
-                                    ? ship.price > 0 
-                                      ? ship.price.toLocaleString() 
-                                      : 'N/A'
-                                    : ship[column.key as keyof Ship]}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          );
-                        })}
-                      </div>
-                    </td>
-                  </tr>
+                              {column.key === 'price' && ship.price === 0
+                                ? 'N/A'
+                                : column.key === 'price'
+                                ? ship[column.key].toLocaleString()
+                                : ship[column.key as keyof Ship]}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    })}
+                  </div>
                 )}
               </TableBody>
             </Table>
