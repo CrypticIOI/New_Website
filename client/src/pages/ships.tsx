@@ -10,7 +10,7 @@ export default function Ships() {
           Browse and compare ships available in X4: Foundations
         </p>
         <div className="text-sm text-primary/80">
-          Total ships in X4 Foundations: {ships.length}
+          Total ships in database: {ships.length}
         </div>
       </div>
       <ShipTable />
