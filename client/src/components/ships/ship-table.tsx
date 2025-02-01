@@ -121,7 +121,6 @@ export function ShipTable() {
           }}
           className="max-w-sm bg-white/5 border-white/10 text-white placeholder:text-white/50"
         />
-
         <div className="flex gap-4">
           <Select value={selectedClass} onValueChange={(value) => {
             setSelectedClass(value as ShipClass | "all");
@@ -143,9 +142,9 @@ export function ShipTable() {
             resetPage();
           }}>
             <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
-              <SelectValue placeholder="Manufacturer" />
+              <SelectValue placeholder="Select manufacturer" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[300px]">
               <SelectItem value="all">All manufacturers</SelectItem>
               {manufacturers.map(manufacturer => (
                 <SelectItem key={manufacturer} value={manufacturer}>{manufacturer}</SelectItem>
@@ -175,12 +174,14 @@ export function ShipTable() {
       </div>
 
       {/* Filter Summary */}
-      <div className="text-sm text-primary/80">
-        Showing {filteredAndSortedShips.length} ships
-        {selectedClass !== "all" && ` of class ${selectedClass}`}
-        {selectedManufacturer !== "all" && ` from ${selectedManufacturer}`}
-        {search && ` matching "${search}"`}
-        {excludeNPCShips && ` (excluding Xenon and Kha'ak ships)`}
+      <div className="flex items-center h-8 text-sm">
+        <div className="text-primary font-medium">
+          {filteredAndSortedShips.length.toLocaleString()} ships found
+          {selectedClass !== "all" && ` • Class: ${selectedClass}`}
+          {selectedManufacturer !== "all" && ` • Manufacturer: ${selectedManufacturer}`}
+          {search && ` • Search: "${search}"`}
+          {excludeNPCShips && ` • Excluding NPC ships`}
+        </div>
       </div>
 
       {/* Ship Table */}
