@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -19,7 +19,8 @@ interface SelectedModule {
 export function StationCalculator() {
   const [selectedModules, setSelectedModules] = useState<SelectedModule[]>([]);
 
-  const addModule = (moduleId: string) => {
+  // Memoize module selection handler
+  const addModule = useCallback((moduleId: string) => {
     setSelectedModules(prev => {
       const existing = prev.find(m => m.id === moduleId);
       if (existing) {
@@ -31,28 +32,38 @@ export function StationCalculator() {
       }
       return [...prev, { id: moduleId, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const removeModule = (moduleId: string) => {
+  // Memoize module removal handler
+  const removeModule = useCallback((moduleId: string) => {
     setSelectedModules(prev => 
       prev.filter(m => m.id !== moduleId)
     );
-  };
+  }, []);
 
-  const totalResources = selectedModules.reduce((acc, selected) => {
-    const module = stationModules.find(m => m.id === selected.id);
-    if (!module) return acc;
+  // Memoize calculations
+  const { totalResources, totalCost } = useMemo(() => {
+    const resources: Record<string, number> = {};
+    let cost = 0;
 
-    Object.entries(module.resources).forEach(([resourceId, amount]) => {
-      acc[resourceId] = (acc[resourceId] || 0) + amount * selected.quantity;
+    selectedModules.forEach(selected => {
+      const module = stationModules.find(m => m.id === selected.id);
+      if (!module) return;
+
+      // Calculate resources
+      Object.entries(module.resources).forEach(([resourceId, amount]) => {
+        resources[resourceId] = (resources[resourceId] || 0) + amount * selected.quantity;
+      });
+
+      // Calculate cost
+      cost += module.cost * selected.quantity;
     });
-    return acc;
-  }, {} as Record<string, number>);
 
-  const totalCost = selectedModules.reduce((acc, selected) => {
-    const module = stationModules.find(m => m.id === selected.id);
-    return acc + (module?.cost || 0) * selected.quantity;
-  }, 0);
+    return {
+      totalResources: resources,
+      totalCost: cost
+    };
+  }, [selectedModules]);
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
