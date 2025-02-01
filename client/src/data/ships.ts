@@ -545,5 +545,60 @@ export const ships: Ship[] = [
     cargo: 54000,
     speed: 136,
     manufacturer: "Teladi Company"
+  },
+  {
+    id: "crane_e_mineral",
+    name: "Crane E (Mineral)",
+    class: "Miner",
+    size: "L",
+    price: 1_922_187,
+    crew: 49,
+    cargo: 50000,
+    speed: 136,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "cutlass",
+    name: "Cutlass",
+    class: "Fighter",
+    size: "S",
+    price: 0,
+    crew: 1,
+    cargo: 100,
+    speed: 201,
+    manufacturer: "Terran Protectorate"
+  },
+  {
+    id: "dart",
+    name: "Dart",
+    class: "Scout",
+    size: "S",
+    price: 346_850,
+    crew: 0,
+    cargo: 340,
+    speed: 634,
+    manufacturer: "Generic"
+  },
+  {
+    id: "demeter_sentinel",
+    name: "Demeter Sentinel",
+    class: "Transport",
+    size: "M",
+    price: 229_050,
+    crew: 15,
+    cargo: 9480,
+    speed: 156,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "demeter_vanguard",
+    name: "Demeter Vanguard",
+    class: "Transport",
+    size: "M",
+    price: 176_650,
+    crew: 19,
+    cargo: 7900,
+    speed: 182,
+    manufacturer: "Paranid"
   }
 ];
