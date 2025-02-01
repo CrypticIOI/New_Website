@@ -1,4 +1,4 @@
-import { Sidebar } from "./sidebar";
+import { TopNav } from "./top-nav";
 
 interface PageContainerProps {
   children: React.ReactNode;
@@ -6,8 +6,8 @@ interface PageContainerProps {
 
 export function PageContainer({ children }: PageContainerProps) {
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
-      <Sidebar />
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <TopNav />
       <main className="flex-1 p-6">{children}</main>
     </div>
   );
