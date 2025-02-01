@@ -17,6 +17,18 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 const ROW_HEIGHT = 48; // Fixed height for each row
 const TABLE_HEIGHT = 600; // Fixed container height
 
+// Column configurations with fixed widths
+const COLUMNS = [
+  { key: 'name', label: 'Name', width: '20%', align: 'left' },
+  { key: 'class', label: 'Class', width: '15%', align: 'left' },
+  { key: 'size', label: 'Size', width: '10%', align: 'left' },
+  { key: 'price', label: 'Price', width: '12%', align: 'right' },
+  { key: 'crew', label: 'Crew', width: '10%', align: 'right' },
+  { key: 'cargo', label: 'Cargo', width: '12%', align: 'right' },
+  { key: 'speed', label: 'Speed', width: '10%', align: 'right' },
+  { key: 'manufacturer', label: 'Manufacturer', width: '11%', align: 'left' },
+];
+
 const shipClasses: ShipClass[] = [
   "Scout",
   "Fighter", 
@@ -195,90 +207,90 @@ export default function Ships() {
           className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm"
           style={{ height: TABLE_HEIGHT, overflowY: "auto" }}
         >
-          <div className="relative">
-            <Table>
-              <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
-                <TableRow className="border-b border-white/10">
-                  <TableHead className="text-white/70">Name</TableHead>
-                  <TableHead className="text-white/70">Class</TableHead>
-                  <TableHead className="text-white/70">Size</TableHead>
+          <Table>
+            <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
+              <TableRow className="border-b border-white/10">
+                {COLUMNS.map(column => (
                   <TableHead 
-                    className="text-white/70 text-right cursor-pointer select-none"
-                    onClick={() => handleSort("price")}
+                    key={column.key}
+                    className="text-white/70"
+                    style={{ 
+                      width: column.width,
+                      textAlign: column.align as any,
+                      cursor: ['price', 'crew', 'cargo', 'speed'].includes(column.key) ? 'pointer' : 'default'
+                    }}
+                    onClick={() => {
+                      if (['price', 'crew', 'cargo', 'speed'].includes(column.key)) {
+                        handleSort(column.key as SortField);
+                      }
+                    }}
                   >
-                    <div className="flex items-center justify-end">
-                      Price
-                      {getSortIcon("price")}
+                    <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : ''}`}>
+                      {column.label}
+                      {['price', 'crew', 'cargo', 'speed'].includes(column.key) && 
+                        getSortIcon(column.key as SortField)}
                     </div>
                   </TableHead>
-                  <TableHead 
-                    className="text-white/70 text-right cursor-pointer select-none"
-                    onClick={() => handleSort("crew")}
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <tr>
+                <td colSpan={8} className="p-0">
+                  <div 
+                    style={{ 
+                      height: `${rowVirtualizer.getTotalSize()}px`,
+                      width: '100%',
+                      position: 'relative'
+                    }}
                   >
-                    <div className="flex items-center justify-end">
-                      Crew
-                      {getSortIcon("crew")}
-                    </div>
-                  </TableHead>
-                  <TableHead 
-                    className="text-white/70 text-right cursor-pointer select-none"
-                    onClick={() => handleSort("cargo")}
-                  >
-                    <div className="flex items-center justify-end">
-                      Cargo
-                      {getSortIcon("cargo")}
-                    </div>
-                  </TableHead>
-                  <TableHead 
-                    className="text-white/70 text-right cursor-pointer select-none"
-                    onClick={() => handleSort("speed")}
-                  >
-                    <div className="flex items-center justify-end">
-                      Speed
-                      {getSortIcon("speed")}
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-white/70">Manufacturer</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <tr>
-                  <td colSpan={8}>
-                    <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }}>
-                      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const ship = filteredAndSortedShips[virtualRow.index];
-                        return (
-                          <TableRow
-                            key={ship.id}
-                            className="border-b border-white/10 transition-colors hover:bg-white/5"
-                            style={{
-                              height: `${ROW_HEIGHT}px`,
-                              transform: `translateY(${virtualRow.start}px)`,
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              width: '100%',
-                            }}
-                          >
-                            <TableCell className="text-primary/90 font-medium">{ship.name}</TableCell>
-                            <TableCell className="text-primary/90">{ship.class}</TableCell>
-                            <TableCell className="text-primary/90">{ship.size}</TableCell>
-                            <TableCell className="text-primary/90 text-right">
-                              {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
-                            </TableCell>
-                            <TableCell className="text-primary/90 text-right">{ship.crew}</TableCell>
-                            <TableCell className="text-primary/90 text-right">{ship.cargo}</TableCell>
-                            <TableCell className="text-primary/90 text-right">{ship.speed}</TableCell>
-                            <TableCell className="text-primary/90">{ship.manufacturer}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </div>
-                  </td>
-                </tr>
-              </TableBody>
-            </Table>
-          </div>
+                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const ship = filteredAndSortedShips[virtualRow.index];
+                      return (
+                        <TableRow
+                          key={ship.id}
+                          className="border-b border-white/10 transition-colors hover:bg-white/5"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: `${ROW_HEIGHT}px`,
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                        >
+                          <TableCell style={{ width: COLUMNS[0].width }} className="text-primary/90 font-medium">
+                            {ship.name}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[1].width }} className="text-primary/90">
+                            {ship.class}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[2].width }} className="text-primary/90">
+                            {ship.size}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[3].width }} className="text-primary/90 text-right">
+                            {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[4].width }} className="text-primary/90 text-right">
+                            {ship.crew}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[5].width }} className="text-primary/90 text-right">
+                            {ship.cargo}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[6].width }} className="text-primary/90 text-right">
+                            {ship.speed}
+                          </TableCell>
+                          <TableCell style={{ width: COLUMNS[7].width }} className="text-primary/90">
+                            {ship.manufacturer}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </div>
+                </td>
+              </tr>
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
