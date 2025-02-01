@@ -25,11 +25,11 @@ const shipClasses: ShipClass[] = [
 
 export function ShipTable() {
   const [search, setSearch] = useState("");
-  const [selectedClass, setSelectedClass] = useState<ShipClass | "">("");
+  const [selectedClass, setSelectedClass] = useState<ShipClass | "all">("all");
 
   const filteredShips = ships.filter(ship => {
     const matchesSearch = ship.name.toLowerCase().includes(search.toLowerCase());
-    const matchesClass = !selectedClass || ship.class === selectedClass;
+    const matchesClass = selectedClass === "all" || ship.class === selectedClass;
     return matchesSearch && matchesClass;
   });
 
@@ -40,14 +40,14 @@ export function ShipTable() {
           placeholder="Search ships..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-sm"
+          className="max-w-sm bg-white/5 border-white/10 text-white placeholder:text-white/50"
         />
-        <Select value={selectedClass} onValueChange={(value) => setSelectedClass(value as ShipClass)}>
-          <SelectTrigger className="w-[180px]">
+        <Select value={selectedClass} onValueChange={(value) => setSelectedClass(value as ShipClass | "all")}>
+          <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
             <SelectValue placeholder="Ship class" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All classes</SelectItem>
+            <SelectItem value="all">All classes</SelectItem>
             {shipClasses.map(cls => (
               <SelectItem key={cls} value={cls}>{cls}</SelectItem>
             ))}
@@ -55,31 +55,31 @@ export function ShipTable() {
         </Select>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Class</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Crew</TableHead>
-              <TableHead>Cargo</TableHead>
-              <TableHead>Speed</TableHead>
-              <TableHead>Manufacturer</TableHead>
+            <TableRow className="border-b border-white/10">
+              <TableHead className="text-white/70">Name</TableHead>
+              <TableHead className="text-white/70">Class</TableHead>
+              <TableHead className="text-white/70">Size</TableHead>
+              <TableHead className="text-white/70">Price</TableHead>
+              <TableHead className="text-white/70">Crew</TableHead>
+              <TableHead className="text-white/70">Cargo</TableHead>
+              <TableHead className="text-white/70">Speed</TableHead>
+              <TableHead className="text-white/70">Manufacturer</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredShips.map((ship) => (
-              <TableRow key={ship.id}>
-                <TableCell>{ship.name}</TableCell>
-                <TableCell>{ship.class}</TableCell>
-                <TableCell>{ship.size}</TableCell>
-                <TableCell>{ship.price.toLocaleString()}</TableCell>
-                <TableCell>{ship.crew}</TableCell>
-                <TableCell>{ship.cargo}</TableCell>
-                <TableCell>{ship.speed}</TableCell>
-                <TableCell>{ship.manufacturer}</TableCell>
+              <TableRow key={ship.id} className="border-b border-white/10">
+                <TableCell className="text-primary/90">{ship.name}</TableCell>
+                <TableCell className="text-primary/90">{ship.class}</TableCell>
+                <TableCell className="text-primary/90">{ship.size}</TableCell>
+                <TableCell className="text-primary/90">{ship.price.toLocaleString()}</TableCell>
+                <TableCell className="text-primary/90">{ship.crew}</TableCell>
+                <TableCell className="text-primary/90">{ship.cargo}</TableCell>
+                <TableCell className="text-primary/90">{ship.speed}</TableCell>
+                <TableCell className="text-primary/90">{ship.manufacturer}</TableCell>
               </TableRow>
             ))}
           </TableBody>
