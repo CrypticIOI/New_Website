@@ -11,8 +11,52 @@
 
   body {
     @apply font-sans antialiased text-foreground bg-[#070B14];
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Mono', monospace;
   }
+}
+
+/* Terminal effects */
+.terminal-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 11, 20, 0) 0%,
+    rgba(7, 11, 20, 0.2) 50%,
+    rgba(7, 11, 20, 0) 100%
+  );
+  background-size: 100% 3px;
+  pointer-events: none;
+}
+
+.terminal-glow {
+  box-shadow: 0 0 20px rgba(var(--primary), 0.1);
+}
+
+.terminal-border {
+  border: 1px solid rgba(var(--primary), 0.2);
+}
+
+/* Scan line animation */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scanline {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--primary), 0.1),
+    transparent
+  );
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
 }
 
 .gradient-animate {
@@ -25,7 +69,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.6;
+    opacity: 0.8;
   }
 }
 
