@@ -1587,5 +1587,124 @@ name: "Boron Angel",
     cargo: 7800,
     speed: 108,
     manufacturer: "Split Dynasty"
+  },
+  // Additional HAT/HOP Ships
+  {
+    id: "hat_odysseus",
+    name: "HAT Odysseus",
+    class: "Carrier",
+    size: "XL",
+    price: 12_450_000,
+    crew: 370,
+    cargo: 2700,
+    speed: 62,
+    manufacturer: "Holy Order"
+  },
+  {
+    id: "hop_behemoth",
+    name: "HOP Behemoth",
+    class: "Destroyer",
+    size: "L",
+    price: 5_050_000,
+    crew: 92,
+    cargo: 1400,
+    speed: 88,
+    manufacturer: "Holy Order"
+  },
+
+  // Specialized Trade Ships
+  {
+    id: "teladi_albatross",
+    name: "Teladi Albatross",
+    class: "Trader",
+    size: "L",
+    price: 2_950_000,
+    crew: 28,
+    cargo: 6800,
+    speed: 118,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "argon_hauler",
+    name: "Argon Hauler",
+    class: "Transport",
+    size: "L",
+    price: 2_850_000,
+    crew: 25,
+    cargo: 6500,
+    speed: 122,
+    manufacturer: "Argon Federation"
+  },
+
+  // Raptor Variants
+  {
+    id: "raptor_sentinel",
+    name: "Raptor Sentinel",
+    class: "Scout",
+    size: "S",
+    price: 79_500,
+    crew: 1,
+    cargo: 48,
+    speed: 258,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "raptor_vanguard",
+    name: "Raptor Vanguard",
+    class: "Scout",
+    size: "S",
+    price: 81_000,
+    crew: 1,
+    cargo: 46,
+    speed: 260,
+    manufacturer: "Split Dynasty"
+  },
+
+  // Hatikvah Ships
+  {
+    id: "hatikvah_scout",
+    name: "Hatikvah Scout",
+    class: "Scout",
+    size: "S",
+    price: 77_500,
+    crew: 2,
+    cargo: 45,
+    speed: 250,
+    manufacturer: "Hatikvah"
+  },
+  {
+    id: "hatikvah_fighter",
+    name: "Hatikvah Fighter",
+    class: "Fighter",
+    size: "S",
+    price: 145_000,
+    crew: 2,
+    cargo: 30,
+    speed: 255,
+    manufacturer: "Hatikvah"
+  },
+
+  // Additional Mining Ships
+  {
+    id: "zyarate_miner",
+    name: "ZYA Rate Miner",
+    class: "Miner",
+    size: "M",
+    price: 395_000,
+    crew: 14,
+    cargo: 2400,
+    speed: 132,
+    manufacturer: "ZYA"
+  },
+  {
+    id: "hop_miner",
+    name: "HOP Miner",
+    class: "Miner",
+    size: "M",
+    price: 392_000,
+    crew: 15,
+    cargo: 2450,
+    speed: 130,
+    manufacturer: "Holy Order"
   }
 ];
