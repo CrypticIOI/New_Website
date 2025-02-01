@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply font-sans antialiased text-foreground bg-[#818589];
+    @apply font-sans antialiased text-foreground bg-[#070B14];
     font-family: 'Inter', sans-serif;
   }
 }
@@ -18,4 +18,17 @@
 .gradient-animate {
   animation: gradient 15s ease infinite;
   background-size: 400% 400%;
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.text-glow {
+  animation: glow 2s ease-in-out infinite;
 }
