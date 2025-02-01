@@ -314,5 +314,71 @@ export const ships: Ship[] = [
     cargo: 2112,
     speed: 189,
     manufacturer: "Argon Federation"
+  },
+    {
+    id: "cerberus_vanguard",
+    name: "Cerberus Vanguard",
+    class: "Frigate",
+    size: "M",
+    price: 963_665,
+    crew: 14,
+    cargo: 1760,
+    speed: 218,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "chimera",
+    name: "Chimera",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 338_625,
+    crew: 2,
+    cargo: 200,
+    speed: 337,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "chthonios_gas_sentinel",
+    name: "Chthonios (Gas) Sentinel",
+    class: "Miner",
+    size: "L",
+    price: 1_395_770,
+    crew: 33,
+    cargo: 38400,
+    speed: 237,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "chthonios_gas_vanguard",
+    name: "Chthonios (Gas) Vanguard",
+    class: "Miner",
+    size: "L",
+    price: 1_154_890,
+    crew: 40,
+    cargo: 32000,
+    speed: 259,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "chthonios_mineral_sentinel",
+    name: "Chthonios (Mineral) Sentinel",
+    class: "Miner",
+    size: "L",
+    price: 1_395_770,
+    crew: 33,
+    cargo: 38400,
+    speed: 237,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "chthonios_mineral_vanguard",
+    name: "Chthonios (Mineral) Vanguard",
+    class: "Miner",
+    size: "L",
+    price: 1_154_890,
+    crew: 40,
+    cargo: 32000,
+    speed: 259,
+    manufacturer: "Paranid"
   }
 ];
