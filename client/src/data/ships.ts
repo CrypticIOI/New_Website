@@ -1039,7 +1039,7 @@ export const ships: Ship[] = [
   },
   {
     id: "boron_angel",
-    name: "Boron Angel",
+name: "Boron Angel",
     class: "Frigate",
     size: "M",
     price: 1_550_000,
@@ -1444,5 +1444,148 @@ export const ships: Ship[] = [
     cargo: 2800,
     speed: 150,
     manufacturer: "Teladi Company"
+  },
+  // Pioneer Ships (Segaris)
+  {
+    id: "pioneer_explorer",
+    name: "Pioneer Explorer",
+    class: "Scout",
+    size: "S",
+    price: 76_000,
+    crew: 2,
+    cargo: 45,
+    speed: 255,
+    manufacturer: "Segaris"
+  },
+  {
+    id: "pioneer_trader",
+    name: "Pioneer Trader",
+    class: "Trader",
+    size: "M",
+    price: 380_000,
+    crew: 10,
+    cargo: 2200,
+    speed: 140,
+    manufacturer: "Segaris"
+  },
+
+  // Additional Boron Variants
+  {
+    id: "boron_skate",
+    name: "Boron Skate",
+    class: "Scout",
+    size: "S",
+    price: 79_000,
+    crew: 2,
+    cargo: 42,
+    speed: 262,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_hammerhead",
+    name: "Boron Hammerhead",
+    class: "Corvette",
+    size: "M",
+    price: 935_000,
+    crew: 21,
+    cargo: 305,
+    speed: 172,
+    manufacturer: "Boron"
+  },
+
+  // Additional Terran Ships
+  {
+    id: "terran_courier",
+    name: "Terran Courier",
+    class: "Transport",
+    size: "M",
+    price: 425_000,
+    crew: 12,
+    cargo: 2400,
+    speed: 135,
+    manufacturer: "Terran"
+  },
+  {
+    id: "terran_interceptor",
+    name: "Terran Interceptor",
+    class: "Fighter",
+    size: "S",
+    price: 165_000,
+    crew: 2,
+    cargo: 25,
+    speed: 275,
+    manufacturer: "Terran"
+  },
+
+  // Additional Yaki Variants
+  {
+    id: "yaki_kappa",
+    name: "Yaki Kappa",
+    class: "Scout",
+    size: "S",
+    price: 82_000,
+    crew: 1,
+    cargo: 38,
+    speed: 270,
+    manufacturer: "Yaki"
+  },
+  {
+    id: "yaki_demon",
+    name: "Yaki Demon",
+    class: "Destroyer",
+    size: "L",
+    price: 4_950_000,
+    crew: 88,
+    cargo: 1350,
+    speed: 92,
+    manufacturer: "Yaki"
+  },
+
+  // HAT/PAR/HOP Variants
+  {
+    id: "hat_vanguard",
+    name: "HAT Vanguard",
+    class: "Fighter",
+    size: "S",
+    price: 152_000,
+    crew: 2,
+    cargo: 28,
+    speed: 258,
+    manufacturer: "Holy Order"
+  },
+  {
+    id: "hop_sentinel",
+    name: "HOP Sentinel",
+    class: "Fighter",
+    size: "S",
+    price: 155_000,
+    crew: 2,
+    cargo: 30,
+    speed: 255,
+    manufacturer: "Holy Order"
+  },
+
+  // Additional Mining Ships
+  {
+    id: "boron_harvester",
+    name: "Boron Harvester",
+    class: "Miner",
+    size: "L",
+    price: 2_850_000,
+    crew: 38,
+    cargo: 8000,
+    speed: 105,
+    manufacturer: "Boron"
+  },
+  {
+    id: "split_rockbreaker",
+    name: "Split Rockbreaker",
+    class: "Miner",
+    size: "L",
+    price: 2_750_000,
+    crew: 35,
+    cargo: 7800,
+    speed: 108,
+    manufacturer: "Split Dynasty"
   }
 ];
