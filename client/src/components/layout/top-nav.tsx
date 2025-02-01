@@ -14,8 +14,8 @@ export function TopNav() {
 
   return (
     <div className="w-full px-4 pt-4">
-      <nav className="rounded-lg border border-white/10 bg-white/10 backdrop-blur-sm shadow-lg">
-        <div className="container flex h-14 items-center justify-between">
+      <nav className="rounded-lg border border-white/10 bg-white/10 backdrop-blur-sm shadow-lg max-w-4xl mx-auto">
+        <div className="container flex h-14 items-center justify-between px-4">
           <div className="font-bold text-white text-xl">CRYPTCORP</div>
           <div className="flex-1 flex justify-center space-x-4">
             {menuItems.map((item) => {
