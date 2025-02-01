@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { useMemo, useState, useCallback } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 const shipClasses: ShipClass[] = [
   "Scout",
@@ -36,6 +36,14 @@ type NumericFilter = {
   max: number;
 };
 
+type SortField = "price" | "crew" | "cargo" | "speed";
+type SortDirection = "asc" | "desc";
+
+type SortConfig = {
+  field: SortField | null;
+  direction: SortDirection;
+};
+
 export function ShipTable() {
   const [search, setSearch] = useState("");
   const [selectedClass, setSelectedClass] = useState<ShipClass | "all">("all");
@@ -45,6 +53,7 @@ export function ShipTable() {
   const [crewRange, setCrewRange] = useState<NumericFilter>({ min: 0, max: Infinity });
   const [cargoRange, setCargoRange] = useState<NumericFilter>({ min: 0, max: Infinity });
   const [speedRange, setSpeedRange] = useState<NumericFilter>({ min: 0, max: Infinity });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ field: null, direction: "asc" });
 
   // Get unique manufacturers
   const manufacturers = useMemo(() => {
@@ -80,9 +89,9 @@ export function ShipTable() {
     });
   }, []);
 
-  // Memoize filtered ships to prevent recalculation on every render
-  const filteredShips = useMemo(() => {
-    return ships.filter(ship => {
+  // Memoize filtered and sorted ships
+  const filteredAndSortedShips = useMemo(() => {
+    let filtered = ships.filter(ship => {
       const matchesSearch = ship.name.toLowerCase().includes(search.toLowerCase()) ||
                           ship.manufacturer.toLowerCase().includes(search.toLowerCase());
       const matchesClass = selectedClass === "all" || ship.class === selectedClass;
@@ -95,12 +104,28 @@ export function ShipTable() {
       return matchesSearch && matchesClass && matchesManufacturer && 
              matchesPrice && matchesCrew && matchesCargo && matchesSpeed;
     });
-  }, [search, selectedClass, selectedManufacturer, priceRange, crewRange, cargoRange, speedRange]);
+
+    // Sort if a sort field is selected
+    if (sortConfig.field) {
+      filtered.sort((a, b) => {
+        const aValue = a[sortConfig.field!];
+        const bValue = b[sortConfig.field!];
+
+        if (sortConfig.direction === "asc") {
+          return aValue - bValue;
+        } else {
+          return bValue - aValue;
+        }
+      });
+    }
+
+    return filtered;
+  }, [search, selectedClass, selectedManufacturer, priceRange, crewRange, cargoRange, speedRange, sortConfig]);
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredShips.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedShips = filteredShips.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedShips = filteredAndSortedShips.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   // Reset page when filters change
   const resetPage = useCallback(() => setCurrentPage(1), []);
@@ -116,6 +141,25 @@ export function ShipTable() {
       max: isMin ? prev.max : value
     }));
     resetPage();
+  };
+
+  // Handler for sorting
+  const handleSort = (field: SortField) => {
+    setSortConfig(prev => ({
+      field,
+      direction: prev.field === field && prev.direction === "asc" ? "desc" : "asc"
+    }));
+    resetPage();
+  };
+
+  // Function to render sort indicator
+  const getSortIcon = (field: SortField) => {
+    if (sortConfig.field !== field) {
+      return <ArrowUpDown className="ml-2 h-4 w-4" />;
+    }
+    return sortConfig.direction === "asc" ? 
+      <ArrowUp className="ml-2 h-4 w-4" /> : 
+      <ArrowDown className="ml-2 h-4 w-4" />;
   };
 
   return (
@@ -253,7 +297,7 @@ export function ShipTable() {
 
       {/* Filter Summary */}
       <div className="text-sm text-primary/80">
-        Showing {filteredShips.length} ships
+        Showing {filteredAndSortedShips.length} ships
         {selectedClass !== "all" && ` of class ${selectedClass}`}
         {selectedManufacturer !== "all" && ` from ${selectedManufacturer}`}
         {search && ` matching "${search}"`}
@@ -267,10 +311,42 @@ export function ShipTable() {
               <TableHead className="text-white/70">Name</TableHead>
               <TableHead className="text-white/70">Class</TableHead>
               <TableHead className="text-white/70">Size</TableHead>
-              <TableHead className="text-white/70 text-right">Price</TableHead>
-              <TableHead className="text-white/70 text-right">Crew</TableHead>
-              <TableHead className="text-white/70 text-right">Cargo</TableHead>
-              <TableHead className="text-white/70 text-right">Speed</TableHead>
+              <TableHead 
+                className="text-white/70 text-right cursor-pointer select-none"
+                onClick={() => handleSort("price")}
+              >
+                <div className="flex items-center justify-end">
+                  Price
+                  {getSortIcon("price")}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="text-white/70 text-right cursor-pointer select-none"
+                onClick={() => handleSort("crew")}
+              >
+                <div className="flex items-center justify-end">
+                  Crew
+                  {getSortIcon("crew")}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="text-white/70 text-right cursor-pointer select-none"
+                onClick={() => handleSort("cargo")}
+              >
+                <div className="flex items-center justify-end">
+                  Cargo
+                  {getSortIcon("cargo")}
+                </div>
+              </TableHead>
+              <TableHead 
+                className="text-white/70 text-right cursor-pointer select-none"
+                onClick={() => handleSort("speed")}
+              >
+                <div className="flex items-center justify-end">
+                  Speed
+                  {getSortIcon("speed")}
+                </div>
+              </TableHead>
               <TableHead className="text-white/70">Manufacturer</TableHead>
             </TableRow>
           </TableHeader>
