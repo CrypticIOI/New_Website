@@ -589,5 +589,148 @@ export const ships: Ship[] = [
     cargo: 0,
     speed: 290,
     manufacturer: "Xenon"
+  },
+    // Additional Xenon Ships
+  {
+    id: "xenon_j",
+    name: "Xenon J",
+    class: "Scout",
+    size: "S",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 300,
+    manufacturer: "Xenon"
+  },
+  {
+    id: "xenon_q",
+    name: "Xenon Q",
+    class: "Frigate",
+    size: "M",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 150,
+    manufacturer: "Xenon"
+  },
+
+  // Additional Terran Ships
+  {
+    id: "asgard",
+    name: "Asgard",
+    class: "Destroyer",
+    size: "XL",
+    price: 15_500_000,
+    crew: 450,
+    cargo: 3200,
+    speed: 55,
+    manufacturer: "Terran"
+  },
+  {
+    id: "syn",
+    name: "Syn",
+    class: "Frigate",
+    size: "M",
+    price: 1_850_000,
+    crew: 35,
+    cargo: 850,
+    speed: 140,
+    manufacturer: "Terran"
+  },
+
+  // Additional Split Ships
+  {
+    id: "buffalo_raider",
+    name: "Buffalo Raider",
+    class: "Transport",
+    size: "L",
+    price: 3_250_000,
+    crew: 38,
+    cargo: 7800,
+    speed: 112,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "python_raider",
+    name: "Python Raider",
+    class: "Fighter",
+    size: "S",
+    price: 165_000,
+    crew: 2,
+    cargo: 28,
+    speed: 258,
+    manufacturer: "Split Dynasty"
+  },
+
+  // VIG Ships
+  {
+    id: "vig_moreya",
+    name: "Moreya",
+    class: "Scout",
+    size: "S",
+    price: 95_000,
+    crew: 2,
+    cargo: 35,
+    speed: 270,
+    manufacturer: "VIG"
+  },
+  {
+    id: "vig_baldric",
+    name: "Baldric",
+    class: "Fighter",
+    size: "S",
+    price: 175_000,
+    crew: 2,
+    cargo: 25,
+    speed: 265,
+    manufacturer: "VIG"
+  },
+
+  // Additional Paranid Ships
+  {
+    id: "hyperion_vanguard",
+    name: "Hyperion Vanguard",
+    class: "Corvette",
+    size: "M",
+    price: 985_000,
+    crew: 22,
+    cargo: 320,
+    speed: 172,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "zeus_vanguard",
+    name: "Zeus Vanguard",
+    class: "Destroyer",
+    size: "L",
+    price: 5_150_000,
+    crew: 92,
+    cargo: 1450,
+    speed: 92,
+    manufacturer: "Paranid"
+  },
+
+  // Additional Teladi Ships
+  {
+    id: "falcon_sentinel",
+    name: "Falcon Sentinel",
+    class: "Fighter",
+    size: "S",
+    price: 148_500,
+    crew: 2,
+    cargo: 32,
+    speed: 248,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "phoenix_sentinel",
+    name: "Phoenix Sentinel",
+    class: "Carrier",
+    size: "XL",
+    price: 12_150_000,
+    crew: 355,
+    cargo: 2550,
+    speed: 68,
+    manufacturer: "Teladi Company"
   }
 ];
