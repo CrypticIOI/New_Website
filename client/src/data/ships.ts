@@ -194,5 +194,60 @@ export const ships: Ship[] = [
     cargo: 3100,
     speed: 156,
     manufacturer: "Argon Federation"
+  },
+  {
+    id: "behemoth_sentinel",
+    name: "Behemoth Sentinel",
+    class: "Destroyer",
+    size: "L",
+    price: 5_641_250,
+    crew: 36,
+    cargo: 2760,
+    speed: 116,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "behemoth_vanguard",
+    name: "Behemoth Vanguard",
+    class: "Destroyer",
+    size: "L",
+    price: 4_713_125,
+    crew: 44,
+    cargo: 2300,
+    speed: 127,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "boa",
+    name: "Boa",
+    class: "Transport",
+    size: "M",
+    price: 373_740,
+    crew: 20,
+    cargo: 7500,
+    speed: 304,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "bolo_gas",
+    name: "Bolo (Gas)",
+    class: "Miner",
+    size: "M",
+    price: 388_740,
+    crew: 7,
+    cargo: 10000,
+    speed: 247,
+    manufacturer: "Terran Protectorate"
+  },
+  {
+    id: "bolo_mineral",
+    name: "Bolo (Mineral)",
+    class: "Miner",
+    size: "M",
+    price: 388_740,
+    crew: 7,
+    cargo: 8800,
+    speed: 247,
+    manufacturer: "Terran Protectorate"
   }
 ];
