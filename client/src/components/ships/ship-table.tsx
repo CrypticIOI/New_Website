@@ -127,9 +127,9 @@ export function ShipTable() {
             resetPage();
           }}>
             <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
-              <SelectValue placeholder="Ship class" />
+              <SelectValue placeholder="Select class" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[300px]">
               <SelectItem value="all">All classes</SelectItem>
               {shipClasses.map(cls => (
                 <SelectItem key={cls} value={cls}>{cls}</SelectItem>
