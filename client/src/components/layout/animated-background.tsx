@@ -4,7 +4,7 @@ export function AnimatedBackground() {
   return (
     <div className="fixed inset-0 -z-10">
       <svg
-        className="w-full h-full opacity-[0.15] mix-blend-overlay"
+        className="w-full h-full opacity-[0.2] mix-blend-soft-light"
         viewBox="0 0 1000 1000"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -25,7 +25,7 @@ export function AnimatedBackground() {
           </feTurbulence>
           <feColorMatrix type="saturate" values="0" />
         </filter>
-        <rect width="100%" height="100%" filter="url(#noise)" opacity="1" />
+        <rect width="100%" height="100%" filter="url(#noise)" fill="white" />
       </svg>
     </div>
   );
