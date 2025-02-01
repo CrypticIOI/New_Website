@@ -1118,5 +1118,111 @@ name: "Boron Angel",
     cargo: 2300,
     speed: 135,
     manufacturer: "Boron"
+  },
+  // Additional Xenon Ships
+  {
+    id: "xenon_l",
+    name: "Xenon L",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 270,
+    manufacturer: "Xenon"
+  },
+  {
+    id: "xenon_xl",
+    name: "Xenon XL",
+    class: "Destroyer",
+    size: "XL",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 65,
+    manufacturer: "Xenon"
+  },
+
+  // Additional VIG Ships
+  {
+    id: "vig_chimera",
+    name: "Chimera",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 225_000,
+    crew: 2,
+    cargo: 28,
+    speed: 245,
+    manufacturer: "VIG"
+  },
+  {
+    id: "vig_griffin",
+    name: "Griffin",
+    class: "Corvette",
+    size: "M",
+    price: 975_000,
+    crew: 20,
+    cargo: 300,
+    speed: 170,
+    manufacturer: "VIG"
+  },
+
+  // Additional Paranid Ships
+  {
+    id: "atlas_sentinel",
+    name: "Atlas Sentinel",
+    class: "Transport",
+    size: "L",
+    price: 3_050_000,
+    crew: 30,
+    cargo: 7000,
+    speed: 118,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "odysseus_sentinel",
+    name: "Odysseus Sentinel",
+    class: "Carrier",
+    size: "XL",
+    price: 12_350_000,
+    crew: 365,
+    cargo: 2650,
+    speed: 63,
+    manufacturer: "Paranid"
+  },
+
+  // Additional Support Ships
+  {
+    id: "argon_mobile_support",
+    name: "Argon Mobile Support",
+    class: "Auxiliary",
+    size: "M",
+    price: 785_000,
+    crew: 15,
+    cargo: 2100,
+    speed: 140,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "split_service_vessel",
+    name: "Split Service Vessel",
+    class: "Auxiliary",
+    size: "M",
+    price: 795_000,
+    crew: 14,
+    cargo: 2000,
+    speed: 145,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "boron_support_ship",
+    name: "Boron Support Ship",
+    class: "Auxiliary",
+    size: "M",
+    price: 825_000,
+    crew: 16,
+    cargo: 2200,
+    speed: 138,
+    manufacturer: "Boron"
   }
 ];
