@@ -10,7 +10,7 @@ export function PageContainer({ children }: PageContainerProps) {
     <div className="min-h-screen flex flex-col text-foreground relative">
       <AnimatedBackground />
       <TopNav />
-      <main className="flex-1 p-6 container mx-auto">{children}</main>
+      <main className="flex-1 px-6 pt-4 pb-6 container mx-auto">{children}</main>
     </div>
   );
 }
