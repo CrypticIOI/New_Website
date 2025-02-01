@@ -967,7 +967,6 @@ export const ships: Ship[] = [
     speed: 65,
     manufacturer: "Boron"
   },
-
     // Additional Split Ships
   {
     id: "split_constructor",
@@ -1040,7 +1039,7 @@ export const ships: Ship[] = [
   },
   {
     id: "boron_angel",
-name: "Boron Angel",
+    name: "Boron Angel",
     class: "Frigate",
     size: "M",
     price: 1_550_000,
@@ -1050,6 +1049,112 @@ name: "Boron Angel",
     manufacturer: "Boron"
   },
 
+  // Additional Ships
+  {
+    id: "teladi_astrid",
+    name: "Teladi Astrid",
+    class: "Miner",
+    size: "M",
+    price: 398_000,
+    crew: 15,
+    cargo: 2500,
+    speed: 128,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "argon_astrid",
+    name: "Argon Astrid",
+    class: "Miner",
+    size: "M",
+    price: 392_000,
+    crew: 14,
+    cargo: 2450,
+    speed: 132,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "paranid_astrid",
+    name: "Paranid Astrid",
+    class: "Miner",
+    size: "M",
+    price: 395_000,
+    crew: 15,
+    cargo: 2480,
+    speed: 130,
+    manufacturer: "Paranid"
+  },
+
+  // Split Vendetta Geometric Ships
+  {
+    id: "split_geometric_tiger",
+    name: "Geometric Tiger",
+    class: "Corvette",
+    size: "M",
+    price: 965_000,
+    crew: 19,
+    cargo: 285,
+    speed: 182,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "split_geometric_owl",
+    name: "Geometric Owl",
+    class: "Scout",
+    size: "S",
+    price: 84_000,
+    crew: 1,
+    cargo: 48,
+    speed: 258,
+    manufacturer: "Split Dynasty"
+  },
+
+  // Additional Mining Ships
+  {
+    id: "split_mineral_miner",
+    name: "Split Mineral Miner",
+    class: "Miner",
+    size: "M",
+    price: 388_000,
+    crew: 13,
+    cargo: 2350,
+    speed: 138,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "terran_mineral_miner",
+    name: "Terran Mineral Miner",
+    class: "Miner",
+    size: "M",
+    price: 415_000,
+    crew: 16,
+    cargo: 2600,
+    speed: 125,
+    manufacturer: "Terran"
+  },
+
+  // Specialized Transport Variants
+  {
+    id: "argon_express",
+    name: "Argon Express",
+    class: "Transport",
+    size: "M",
+    price: 375_000,
+    crew: 10,
+    cargo: 2100,
+    speed: 142,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "paranid_pilgrim_hauler",
+    name: "Paranid Pilgrim Hauler",
+    class: "Transport",
+    size: "L",
+    price: 3_150_000,
+    crew: 32,
+    cargo: 7200,
+    speed: 118,
+    manufacturer: "Paranid"
+  },
   // Additional Auxiliary Ships
   {
     id: "paranid_constructor",
@@ -1224,5 +1329,120 @@ name: "Boron Angel",
     cargo: 2200,
     speed: 138,
     manufacturer: "Boron"
+  },
+  // Kha'ak Ships
+  {
+    id: "khaak_scout",
+    name: "Kha'ak Scout",
+    class: "Scout",
+    size: "S",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 280,
+    manufacturer: "Kha'ak"
+  },
+  {
+    id: "khaak_fighter",
+    name: "Kha'ak Fighter",
+    class: "Fighter",
+    size: "S",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 265,
+    manufacturer: "Kha'ak"
+  },
+  {
+    id: "khaak_hive",
+    name: "Kha'ak Hive",
+    class: "Carrier",
+    size: "XL",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 60,
+    manufacturer: "Kha'ak"
+  },
+  {
+    id: "khaak_destroyer",
+    name: "Kha'ak Destroyer",
+    class: "Destroyer",
+    size: "L",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 85,
+    manufacturer: "Kha'ak"
+  },
+
+  // Additional Boron Kingdom End Ships
+  {
+    id: "boron_stingray",
+    name: "Boron Stingray",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 208_000,
+    crew: 2,
+    cargo: 35,
+    speed: 238,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_swordfish",
+    name: "Boron Swordfish",
+    class: "Corvette",
+    size: "M",
+    price: 945_000,
+    crew: 22,
+    cargo: 310,
+    speed: 168,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_narwhal",
+    name: "Boron Narwhal",
+    class: "Frigate",
+    size: "M",
+    price: 1_485_000,
+    crew: 42,
+    cargo: 750,
+    speed: 145,
+    manufacturer: "Boron"
+  },
+
+  // Additional Specialized Ships
+  {
+    id: "terran_expeditionary",
+    name: "Terran Expeditionary Vessel",
+    class: "Auxiliary",
+    size: "XL",
+    price: 7_850_000,
+    crew: 75,
+    cargo: 10000,
+    speed: 80,
+    manufacturer: "Terran"
+  },
+  {
+    id: "paranid_pilgrim",
+    name: "Paranid Pilgrim",
+    class: "Transport",
+    size: "L",
+    price: 3_250_000,
+    crew: 35,
+    cargo: 7500,
+    speed: 115,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "teladi_venture",
+    name: "Teladi Venture",
+    class: "Trader",
+    size: "M",
+    price: 450_000,
+    crew: 10,
+    cargo: 2800,
+    speed: 150,
+    manufacturer: "Teladi Company"
   }
 ];
