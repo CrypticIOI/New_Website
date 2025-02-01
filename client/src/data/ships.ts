@@ -600,5 +600,60 @@ export const ships: Ship[] = [
     cargo: 7900,
     speed: 182,
     manufacturer: "Paranid"
+  },
+  {
+    id: "discoverer_sentinel",
+    name: "Discoverer Sentinel",
+    class: "Scout",
+    size: "S",
+    price: 105_930,
+    crew: 1,
+    cargo: 648,
+    speed: 225,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "discoverer_vanguard",
+    name: "Discoverer Vanguard",
+    class: "Scout",
+    size: "S",
+    price: 87_605,
+    crew: 2,
+    cargo: 540,
+    speed: 237,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "dolphin",
+    name: "Dolphin",
+    class: "Transport",
+    size: "M",
+    price: 255_620,
+    crew: 21,
+    cargo: 9200,
+    speed: 117,
+    manufacturer: "Boron"
+  },
+  {
+    id: "donia",
+    name: "Donia",
+    class: "Miner",
+    size: "L",
+    price: 1_564_470,
+    crew: 31,
+    cargo: 34000,
+    speed: 251,
+    manufacturer: "Pirates"
+  },
+  {
+    id: "dragon",
+    name: "Dragon",
+    class: "Corvette",
+    size: "M",
+    price: 1_243_415,
+    crew: 6,
+    cargo: 450,
+    speed: 452,
+    manufacturer: "Split Dynasty"
   }
 ];
