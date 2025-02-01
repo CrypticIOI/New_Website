@@ -380,5 +380,60 @@ export const ships: Ship[] = [
     cargo: 32000,
     speed: 259,
     manufacturer: "Paranid"
+  },
+  {
+    id: "cobra",
+    name: "Cobra",
+    class: "Frigate",
+    size: "M",
+    price: 2_172_540,
+    crew: 25,
+    cargo: 1290,
+    speed: 472,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "colossus_e",
+    name: "Colossus E",
+    class: "Carrier",
+    size: "XL",
+    price: 15_359_641,
+    crew: 131,
+    cargo: 25000,
+    speed: 142,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "colossus_sentinel",
+    name: "Colossus Sentinel",
+    class: "Carrier",
+    size: "XL",
+    price: 12_102_675,
+    crew: 102,
+    cargo: 22800,
+    speed: 104,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "colossus_vanguard",
+    name: "Colossus Vanguard",
+    class: "Carrier",
+    size: "XL",
+    price: 10_090_050,
+    crew: 123,
+    cargo: 19000,
+    speed: 116,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "condor_sentinel",
+    name: "Condor Sentinel",
+    class: "Carrier",
+    size: "XL",
+    price: 13_409_595,
+    crew: 112,
+    cargo: 33600,
+    speed: 103,
+    manufacturer: "Teladi Company"
   }
 ];
