@@ -5,16 +5,16 @@ export default function Home() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">X4 Foundations Tools</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold text-white">X4 Foundations Tools</h1>
+        <p className="text-white/80">
           Manage your space empire with our suite of tools and calculators
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card className="bg-white/10 border-white/10">
           <CardHeader>
-            <CardTitle>Ships Database</CardTitle>
+            <CardTitle className="text-white">Ships Database</CardTitle>
           </CardHeader>
           <CardContent>
             <AspectRatio ratio={16/9}>
@@ -24,15 +24,15 @@ export default function Home() {
                 className="rounded-md object-cover"
               />
             </AspectRatio>
-            <p className="mt-4 text-sm text-muted-foreground">
+            <p className="mt-4 text-sm text-white/70">
               Browse and compare ship specifications, loadouts, and prices
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white/10 border-white/10">
           <CardHeader>
-            <CardTitle>Station Calculator</CardTitle>
+            <CardTitle className="text-white">Station Calculator</CardTitle>
           </CardHeader>
           <CardContent>
             <AspectRatio ratio={16/9}>
@@ -42,15 +42,15 @@ export default function Home() {
                 className="rounded-md object-cover"
               />
             </AspectRatio>
-            <p className="mt-4 text-sm text-muted-foreground">
+            <p className="mt-4 text-sm text-white/70">
               Plan your station builds with our resource calculator
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white/10 border-white/10">
           <CardHeader>
-            <CardTitle>Trade Routes</CardTitle>
+            <CardTitle className="text-white">Trade Routes</CardTitle>
           </CardHeader>
           <CardContent>
             <AspectRatio ratio={16/9}>
@@ -60,7 +60,7 @@ export default function Home() {
                 className="rounded-md object-cover"
               />
             </AspectRatio>
-            <p className="mt-4 text-sm text-muted-foreground">
+            <p className="mt-4 text-sm text-white/70">
               Visualize and optimize your trading operations
             </p>
           </CardContent>

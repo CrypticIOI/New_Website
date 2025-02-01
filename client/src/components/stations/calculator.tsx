@@ -56,14 +56,14 @@ export function StationCalculator() {
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <Card>
+      <Card className="bg-white/10 border-white/10">
         <CardHeader>
-          <CardTitle>Add Modules</CardTitle>
+          <CardTitle className="text-white">Add Modules</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <Select onValueChange={addModule}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white">
                 <SelectValue placeholder="Select a module" />
               </SelectTrigger>
               <SelectContent>
@@ -80,7 +80,7 @@ export function StationCalculator() {
                 const module = stationModules.find(m => m.id === selected.id);
                 if (!module) return null;
                 return (
-                  <div key={selected.id} className="flex items-center justify-between">
+                  <div key={selected.id} className="flex items-center justify-between text-white">
                     <span>{module.name} x{selected.quantity}</span>
                     <Button 
                       variant="destructive" 
@@ -97,23 +97,23 @@ export function StationCalculator() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white/10 border-white/10">
         <CardHeader>
-          <CardTitle>Required Resources</CardTitle>
+          <CardTitle className="text-white">Required Resources</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {Object.entries(totalResources).map(([resourceId, amount]) => {
               const resource = resources.find(r => r.id === resourceId);
               return (
-                <div key={resourceId} className="flex justify-between">
+                <div key={resourceId} className="flex justify-between text-white">
                   <span>{resource?.name || resourceId}</span>
                   <span>{amount.toLocaleString()}</span>
                 </div>
               );
             })}
-            <div className="pt-4 border-t">
-              <div className="flex justify-between font-bold">
+            <div className="pt-4 border-t border-white/10">
+              <div className="flex justify-between font-bold text-white">
                 <span>Total Cost</span>
                 <span>{totalCost.toLocaleString()} Credits</span>
               </div>

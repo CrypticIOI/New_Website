@@ -15,9 +15,9 @@ export function TopNav() {
   return (
     <div className="w-full px-4 pt-4">
       <nav className="rounded-lg border border-white/10 bg-white/10 backdrop-blur-sm shadow-lg">
-        <div className="container flex h-14 items-center">
-          <div className="mr-4 font-semibold text-white">X4 Tools</div>
-          <div className="flex space-x-4">
+        <div className="container flex h-14 items-center justify-between">
+          <div className="font-bold text-white text-xl">CRYPTCORP</div>
+          <div className="flex-1 flex justify-center space-x-4">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -35,6 +35,7 @@ export function TopNav() {
               );
             })}
           </div>
+          <div className="w-[100px]" /> {/* Spacer to balance the layout */}
         </div>
       </nav>
     </div>
