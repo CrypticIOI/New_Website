@@ -1,6 +1,12 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { Rocket, Factory, BarChart3, Home } from "lucide-react";
+import { 
+  Rocket, 
+  Factory, 
+  BarChart3, 
+  Home,
+} from "lucide-react";
+
 
 const menuItems = [
   { icon: Home, label: "Home", href: "/" },
