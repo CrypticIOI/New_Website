@@ -32,37 +32,3 @@
 .text-glow {
   animation: glow 2s ease-in-out infinite;
 }
-
-/* Star animations */
-@keyframes twinkle {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.1; }
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-2000px); }
-}
-
-.star-small {
-  position: fixed;
-  inset: 0;
-  box-shadow: var(--star-small);
-  animation: float 150s linear infinite, twinkle 4s ease-in-out infinite;
-}
-
-.star-medium {
-  position: fixed;
-  inset: 0;
-  box-shadow: var(--star-medium);
-  animation: float 200s linear infinite, twinkle 6s ease-in-out infinite;
-  animation-delay: -2s;
-}
-
-.star-large {
-  position: fixed;
-  inset: 0;
-  box-shadow: var(--star-large);
-  animation: float 250s linear infinite, twinkle 8s ease-in-out infinite;
-  animation-delay: -4s;
-}
