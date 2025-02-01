@@ -827,5 +827,168 @@ export const ships: Ship[] = [
     cargo: 780,
     speed: 142,
     manufacturer: "Paranid"
+  },
+  // ALI Manufacturing Ships
+  {
+    id: "ali_constructor",
+    name: "ALI Constructor",
+    class: "Auxiliary",
+    size: "L",
+    price: 2_850_000,
+    crew: 25,
+    cargo: 5000,
+    speed: 95,
+    manufacturer: "ALI"
+  },
+  {
+    id: "ali_mobile_factory",
+    name: "ALI Mobile Factory",
+    class: "Auxiliary",
+    size: "XL",
+    price: 8_500_000,
+    crew: 85,
+    cargo: 12000,
+    speed: 75,
+    manufacturer: "ALI"
+  },
+
+  // Additional Terran Ships
+  {
+    id: "terran_constructor",
+    name: "Terran Constructor",
+    class: "Auxiliary",
+    size: "L",
+    price: 3_150_000,
+    crew: 28,
+    cargo: 5500,
+    speed: 90,
+    manufacturer: "Terran"
+  },
+  {
+    id: "terran_resupplier",
+    name: "Terran Resupplier",
+    class: "Auxiliary",
+    size: "M",
+    price: 850_000,
+    crew: 15,
+    cargo: 2200,
+    speed: 140,
+    manufacturer: "Terran"
+  },
+
+  // Yaki Ships
+  {
+    id: "yaki_kitsune",
+    name: "Yaki Kitsune",
+    class: "Fighter",
+    size: "S",
+    price: 168_000,
+    crew: 2,
+    cargo: 28,
+    speed: 262,
+    manufacturer: "Yaki"
+  },
+  {
+    id: "yaki_oni",
+    name: "Yaki Oni",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 215_000,
+    crew: 2,
+    cargo: 32,
+    speed: 235,
+    manufacturer: "Yaki"
+  },
+  {
+    id: "yaki_tengu",
+    name: "Yaki Tengu",
+    class: "Corvette",
+    size: "M",
+    price: 950_000,
+    crew: 18,
+    cargo: 280,
+    speed: 175,
+    manufacturer: "Yaki"
+  },
+
+  // Boron Ships (Kingdom End DLC)
+  {
+    id: "boron_ray",
+    name: "Boron Ray",
+    class: "Scout",
+    size: "S",
+    price: 82_000,
+    crew: 2,
+    cargo: 45,
+    speed: 260,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_barracuda",
+    name: "Boron Barracuda",
+    class: "Fighter",
+    size: "S",
+    price: 155_000,
+    crew: 2,
+    cargo: 30,
+    speed: 255,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_dolphin",
+    name: "Boron Dolphin",
+    class: "Corvette",
+    size: "M",
+    price: 925_000,
+    crew: 20,
+    cargo: 300,
+    speed: 170,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_orca",
+    name: "Boron Orca",
+    class: "Destroyer",
+    size: "L",
+    price: 4_850_000,
+    crew: 85,
+    cargo: 1300,
+    speed: 95,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_megalodon",
+    name: "Boron Megalodon",
+    class: "Carrier",
+    size: "XL",
+    price: 12_500_000,
+    crew: 360,
+    cargo: 2700,
+    speed: 65,
+    manufacturer: "Boron"
+  },
+
+    // Additional Split Ships
+  {
+    id: "split_constructor",
+    name: "Split Constructor",
+    class: "Auxiliary",
+    size: "L",
+    price: 2_950_000,
+    crew: 30,
+    cargo: 5200,
+    speed: 92,
+    manufacturer: "Split Dynasty"
+  },
+    {
+    id: "split_auxiliary",
+    name: "Split Auxiliary",
+    class: "Auxiliary",
+    size: "M",
+    price: 750_000,
+    crew: 12,
+    cargo: 1900,
+    speed: 145,
+    manufacturer: "Split Dynasty"
   }
 ];
