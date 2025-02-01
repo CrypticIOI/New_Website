@@ -277,7 +277,7 @@ export const ships: Ship[] = [
     manufacturer: "Teladi Company"
   },
   {
-    id: "osprey_sentinel",
+   id: "osprey_sentinel",
     name: "Osprey Sentinel",
     class: "Fighter",
     size: "S",
@@ -1039,7 +1039,7 @@ export const ships: Ship[] = [
   },
   {
     id: "boron_angel",
-name: "Boron Angel",
+    name: "Boron Angel",
     class: "Frigate",
     size: "M",
     price: 1_550_000,
@@ -1706,5 +1706,135 @@ name: "Boron Angel",
     cargo: 2450,
     speed: 130,
     manufacturer: "Holy Order"
+  },
+  // Additional Faction Variations
+  {
+    id: "tel_phoenix_prototype",
+    name: "Phoenix Prototype",
+    class: "Carrier",
+    size: "XL",
+    price: 13_500_000,
+    crew: 380,
+    cargo: 2900,
+    speed: 62,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "arg_behemoth_prototype",
+    name: "Behemoth Prototype",
+    class: "Destroyer",
+    size: "L",
+    price: 5_250_000,
+    crew: 95,
+    cargo: 1500,
+    speed: 85,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "par_odysseus_prototype",
+    name: "Odysseus Prototype",
+    class: "Carrier",
+    size: "XL",
+    price: 13_250_000,
+    crew: 375,
+    cargo: 2800,
+    speed: 63,
+    manufacturer: "Paranid"
+  },
+
+  // Additional Mining Variants
+  {
+    id: "advanced_mineral_scanner",
+    name: "Advanced Mineral Scanner",
+    class: "Miner",
+    size: "M",
+    price: 450_000,
+    crew: 18,
+    cargo: 2800,
+    speed: 125,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "deep_core_extractor",
+    name: "Deep Core Extractor",
+    class: "Miner",
+    size: "L",
+    price: 3_150_000,
+    crew: 42,
+    cargo: 8500,
+    speed: 102,
+    manufacturer: "Teladi Company"
+  },
+
+  // Unique Capital Ships
+  {
+    id: "syn_prototype",
+    name: "Syn Prototype",
+    class: "Destroyer",
+    size: "XL",
+    price: 15_750_000,
+    crew: 460,
+    cargo: 3400,
+    speed: 52,
+    manufacturer: "Terran"
+  },
+  {
+    id: "asgard_prototype",
+    name: "Asgard Prototype",
+    class: "Destroyer",
+    size: "XL",
+    price: 16_500_000,
+    crew: 480,
+    cargo: 3600,
+    speed: 50,
+    manufacturer: "Terran"
+  },
+
+  // DLC-Specific Ships
+  {
+    id: "astrid_vanguard",
+    name: "Astrid Vanguard",
+    class: "Miner",
+    size: "M",
+    price: 405_000,
+    crew: 16,
+    cargo: 2600,
+    speed: 128,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "erlking",
+    name: "Erlking",
+    class: "Destroyer",
+    size: "L",
+    price: 5_150_000,
+    crew: 92,
+    cargo: 1450,
+    speed: 88,
+    manufacturer: "Terran"
+  },
+
+  // Transport Specialists
+  {
+    id: "tel_shuyaku_vanguard",
+    name: "Shuyaku Vanguard",
+    class: "Transport",
+    size: "L",
+    price: 3_250_000,
+    crew: 35,
+    cargo: 7200,
+    speed: 115,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "split_elephant",
+    name: "Split Elephant",
+    class: "Transport",
+     size: "XL",
+    price: 8_500_000,
+    crew: 85,
+    cargo: 15000,
+    speed: 85,
+    manufacturer: "Split Dynasty"
   }
 ];
