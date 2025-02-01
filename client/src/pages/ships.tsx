@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import {
   Table,
@@ -12,8 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
-const ITEMS_PER_PAGE = 25;
+const ROW_HEIGHT = 48; // Fixed height for each row
+const TABLE_HEIGHT = 600; // Fixed container height
 
 const shipClasses: ShipClass[] = [
   "Scout",
@@ -36,13 +38,14 @@ type SortDirection = "asc" | "desc";
 export default function Ships() {
   const [search, setSearch] = useState("");
   const [selectedClass, setSelectedClass] = useState<ShipClass | "all">("all");
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedManufacturer, setSelectedManufacturer] = useState("all");
   const [sortConfig, setSortConfig] = useState<{field: SortField | null; direction: SortDirection}>({ 
     field: null, 
     direction: "asc" 
   });
   const [excludeNPCShips, setExcludeNPCShips] = useState(false);
+
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   // Memoize manufacturers list
   const manufacturers = useMemo(() => (
@@ -77,10 +80,13 @@ export default function Ships() {
     return filtered;
   }, [search, selectedClass, selectedManufacturer, sortConfig, excludeNPCShips]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedShips = filteredAndSortedShips.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  // Virtual row handling
+  const rowVirtualizer = useVirtualizer({
+    count: filteredAndSortedShips.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => ROW_HEIGHT,
+    overscan: 5,
+  });
 
   // Handle sort
   const handleSort = useCallback((field: SortField) => {
@@ -88,7 +94,6 @@ export default function Ships() {
       field,
       direction: prev.field === field && prev.direction === "asc" ? "desc" : "asc"
     }));
-    setCurrentPage(1);
   }, []);
 
   // Sort indicator
@@ -119,19 +124,13 @@ export default function Ships() {
           <Input
             placeholder="Search ships or manufacturers..."
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => setSearch(e.target.value)}
             className="max-w-sm bg-white/5 border-white/10 text-white placeholder:text-white/50"
           />
           <div className="flex gap-4">
             <Select 
               value={selectedClass} 
-              onValueChange={(value) => {
-                setSelectedClass(value as ShipClass | "all");
-                setCurrentPage(1);
-              }}
+              onValueChange={(value) => setSelectedClass(value as ShipClass | "all")}
             >
               <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
                 <SelectValue placeholder="Select class" />
@@ -146,10 +145,7 @@ export default function Ships() {
 
             <Select 
               value={selectedManufacturer} 
-              onValueChange={(value) => {
-                setSelectedManufacturer(value);
-                setCurrentPage(1);
-              }}
+              onValueChange={setSelectedManufacturer}
             >
               <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
                 <SelectValue placeholder="Select manufacturer" />
@@ -171,10 +167,7 @@ export default function Ships() {
           <Checkbox
             id="exclude-npc"
             checked={excludeNPCShips}
-            onCheckedChange={(checked) => {
-              setExcludeNPCShips(checked as boolean);
-              setCurrentPage(1);
-            }}
+            onCheckedChange={(checked) => setExcludeNPCShips(checked as boolean)}
             className="bg-white/5 border-white/10"
           />
           <label
@@ -197,9 +190,13 @@ export default function Ships() {
         </div>
 
         {/* Ship Table */}
-        <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
+        <div 
+          ref={tableContainerRef}
+          className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm"
+          style={{ height: TABLE_HEIGHT, overflowY: "auto" }}
+        >
           <Table>
-            <TableHeader>
+            <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
               <TableRow className="border-b border-white/10">
                 <TableHead className="text-white/70">Name</TableHead>
                 <TableHead className="text-white/70">Class</TableHead>
@@ -244,49 +241,33 @@ export default function Ships() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedShips.map((ship) => (
-                <TableRow
-                  key={ship.id}
-                  className="border-b border-white/10 transition-colors hover:bg-white/5"
-                >
-                  <TableCell className="text-primary/90 font-medium">{ship.name}</TableCell>
-                  <TableCell className="text-primary/90">{ship.class}</TableCell>
-                  <TableCell className="text-primary/90">{ship.size}</TableCell>
-                  <TableCell className="text-primary/90 text-right">
-                    {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
-                  </TableCell>
-                  <TableCell className="text-primary/90 text-right">{ship.crew}</TableCell>
-                  <TableCell className="text-primary/90 text-right">{ship.cargo}</TableCell>
-                  <TableCell className="text-primary/90 text-right">{ship.speed}</TableCell>
-                  <TableCell className="text-primary/90">{ship.manufacturer}</TableCell>
-                </TableRow>
-              ))}
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const ship = filteredAndSortedShips[virtualRow.index];
+                return (
+                  <TableRow
+                    key={ship.id}
+                    className="border-b border-white/10 transition-colors hover:bg-white/5"
+                    style={{
+                      height: `${ROW_HEIGHT}px`,
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    <TableCell className="text-primary/90 font-medium">{ship.name}</TableCell>
+                    <TableCell className="text-primary/90">{ship.class}</TableCell>
+                    <TableCell className="text-primary/90">{ship.size}</TableCell>
+                    <TableCell className="text-primary/90 text-right">
+                      {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
+                    </TableCell>
+                    <TableCell className="text-primary/90 text-right">{ship.crew}</TableCell>
+                    <TableCell className="text-primary/90 text-right">{ship.cargo}</TableCell>
+                    <TableCell className="text-primary/90 text-right">{ship.speed}</TableCell>
+                    <TableCell className="text-primary/90">{ship.manufacturer}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-4">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1 rounded bg-white/5 border border-white/10 text-white/70 disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <span className="px-3 py-1 text-white/70">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded bg-white/5 border border-white/10 text-white/70 disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
