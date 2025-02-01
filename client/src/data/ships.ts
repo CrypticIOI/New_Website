@@ -990,5 +990,133 @@ export const ships: Ship[] = [
     cargo: 1900,
     speed: 145,
     manufacturer: "Split Dynasty"
+  },
+  // Additional Yaki Ships
+  {
+    id: "yaki_raider",
+    name: "Yaki Raider",
+    class: "Fighter",
+    size: "S",
+    price: 172_000,
+    crew: 2,
+    cargo: 30,
+    speed: 260,
+    manufacturer: "Yaki"
+  },
+  {
+    id: "yaki_phantom",
+    name: "Yaki Phantom",
+    class: "Scout",
+    size: "S",
+    price: 85_000,
+    crew: 1,
+    cargo: 40,
+    speed: 275,
+    manufacturer: "Yaki"
+  },
+
+  // Additional Boron Ships
+  {
+    id: "boron_marlin",
+    name: "Boron Marlin",
+    class: "Scout",
+    size: "S",
+    price: 78_000,
+    crew: 2,
+    cargo: 48,
+    speed: 265,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_mako",
+    name: "Boron Mako",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 210_000,
+    crew: 2,
+    cargo: 35,
+    speed: 240,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_angel",
+name: "Boron Angel",
+    class: "Frigate",
+    size: "M",
+    price: 1_550_000,
+    crew: 45,
+    cargo: 800,
+    speed: 140,
+    manufacturer: "Boron"
+  },
+
+  // Additional Auxiliary Ships
+  {
+    id: "paranid_constructor",
+    name: "Paranid Constructor",
+    class: "Auxiliary",
+    size: "L",
+    price: 3_050_000,
+    crew: 28,
+    cargo: 5300,
+    speed: 88,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "paranid_resupplier",
+    name: "Paranid Resupplier",
+    class: "Auxiliary",
+    size: "M",
+    price: 780_000,
+    crew: 14,
+    cargo: 2000,
+    speed: 142,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "teladi_constructor",
+    name: "Teladi Constructor",
+    class: "Auxiliary",
+    size: "L",
+    price: 3_100_000,
+    crew: 26,
+    cargo: 5400,
+    speed: 86,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "teladi_resupplier",
+    name: "Teladi Resupplier",
+    class: "Auxiliary",
+    size: "M",
+    price: 820_000,
+    crew: 15,
+    cargo: 2100,
+    speed: 138,
+    manufacturer: "Teladi Company"
+  },
+
+  // Additional Boron DLC Ships
+  {
+    id: "boron_octopus",
+    name: "Boron Octopus",
+    class: "Auxiliary",
+    size: "L",
+    price: 3_200_000,
+    crew: 30,
+    cargo: 5600,
+    speed: 85,
+    manufacturer: "Boron"
+  },
+  {
+    id: "boron_nautilus",
+    name: "Boron Nautilus",
+    class: "Auxiliary",
+    size: "M",
+    price: 850_000,
+    crew: 16,
+    cargo: 2300,
+    speed: 135,
+    manufacturer: "Boron"
   }
 ];
