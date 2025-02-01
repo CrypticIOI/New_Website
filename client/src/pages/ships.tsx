@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -6,11 +6,11 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Filter, X } from "lucide-react";
+import { Loader2, Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
-const CHUNK_SIZE = 20; // Number of ships to load at once
+const SHIPS_PER_PAGE = 16; // 4x4 grid
 
 const shipClasses: ShipClass[] = [
   "Scout", "Fighter", "Heavy Fighter", "Corvette", "Frigate", 
@@ -33,30 +33,12 @@ export default function Ships() {
   });
   const [excludeNPCShips, setExcludeNPCShips] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(CHUNK_SIZE);
+  const [currentPage, setCurrentPage] = useState(0);
 
   // Simulate loading state
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Scroll handler for infinite scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1000) {
-        setVisibleCount(prev => Math.min(prev + CHUNK_SIZE, filteredAndSortedShips.length));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Reset visible count when filters change
-  useEffect(() => {
-    setVisibleCount(CHUNK_SIZE);
-  }, [search, selectedClass, selectedManufacturer, excludeNPCShips, sortConfig]);
+  useState(() => {
+    setTimeout(() => setIsLoading(false), 500);
+  });
 
   // Memoize manufacturers list
   const manufacturers = useMemo(() => (
@@ -102,10 +84,14 @@ export default function Ships() {
     }
   }, [search, selectedClass, selectedManufacturer, sortConfig, excludeNPCShips, isLoading]);
 
-  // Visible ships
-  const visibleShips = useMemo(() => 
-    filteredAndSortedShips.slice(0, visibleCount)
-  , [filteredAndSortedShips, visibleCount]);
+  // Get current page ships
+  const currentShips = useMemo(() => {
+    const start = currentPage * SHIPS_PER_PAGE;
+    return filteredAndSortedShips.slice(start, start + SHIPS_PER_PAGE);
+  }, [filteredAndSortedShips, currentPage]);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredAndSortedShips.length / SHIPS_PER_PAGE);
 
   // Clear all filters
   const clearFilters = () => {
@@ -114,6 +100,7 @@ export default function Ships() {
     setSelectedManufacturer("all");
     setExcludeNPCShips(false);
     setSortConfig({ field: null, direction: "asc" });
+    setCurrentPage(0);
   };
 
   // Active filters count
@@ -124,6 +111,21 @@ export default function Ships() {
     excludeNPCShips,
     sortConfig.field !== null,
   ].filter(Boolean).length;
+
+  // Handle pagination
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(prev => prev + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
+      window.scrollTo(0, 0);
+    }
+  };
 
   return (
     <div className="space-y-6 p-6">
@@ -189,7 +191,10 @@ export default function Ships() {
               <div className="grid gap-4 md:grid-cols-2">
                 <Select 
                   value={selectedClass} 
-                  onValueChange={(value) => setSelectedClass(value as ShipClass | "all")}
+                  onValueChange={(value) => {
+                    setSelectedClass(value as ShipClass | "all");
+                    setCurrentPage(0);
+                  }}
                 >
                   <SelectTrigger className="bg-white/5 border-white/10 text-white">
                     <SelectValue placeholder="Filter by class" />
@@ -204,7 +209,10 @@ export default function Ships() {
 
                 <Select 
                   value={selectedManufacturer} 
-                  onValueChange={setSelectedManufacturer}
+                  onValueChange={(value) => {
+                    setSelectedManufacturer(value);
+                    setCurrentPage(0);
+                  }}
                 >
                   <SelectTrigger className="bg-white/5 border-white/10 text-white">
                     <SelectValue placeholder="Filter by manufacturer" />
@@ -224,7 +232,10 @@ export default function Ships() {
                 <Checkbox
                   id="exclude-npc"
                   checked={excludeNPCShips}
-                  onCheckedChange={(checked) => setExcludeNPCShips(checked as boolean)}
+                  onCheckedChange={(checked) => {
+                    setExcludeNPCShips(checked as boolean);
+                    setCurrentPage(0);
+                  }}
                   className="bg-white/5 border-white/10"
                 />
                 <label
@@ -291,67 +302,83 @@ export default function Ships() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {visibleShips.map((ship) => (
-                <motion.div
-                  key={ship.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.2 }}
-                  className="group"
-                >
-                  <Card className="relative h-full overflow-hidden border-white/10 bg-black/40 backdrop-blur-sm hover:bg-white/5 transition-colors">
-                    <div className="p-4 space-y-3">
-                      <div className="space-y-1">
-                        <h3 className="font-semibold text-white group-hover:text-primary transition-colors">
-                          {ship.name}
-                        </h3>
-                        <div className="flex items-center gap-2 text-sm text-white/70">
-                          <span>{ship.manufacturer}</span>
-                          <span className="text-white/30">•</span>
-                          <span>{ship.class}</span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 text-sm">
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {currentShips.map((ship) => (
+                  <motion.div
+                    key={ship.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="group"
+                  >
+                    <Card className="relative h-full overflow-hidden border-white/10 bg-black/40 backdrop-blur-sm hover:bg-white/5 transition-colors">
+                      <div className="p-4 space-y-3">
                         <div className="space-y-1">
-                          <div className="text-white/50">Price</div>
-                          <div className="font-medium text-white">
-                            {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
+                          <h3 className="font-semibold text-white group-hover:text-primary transition-colors">
+                            {ship.name}
+                          </h3>
+                          <div className="flex items-center gap-2 text-sm text-white/70">
+                            <span>{ship.manufacturer}</span>
+                            <span className="text-white/30">•</span>
+                            <span>{ship.class}</span>
                           </div>
                         </div>
-                        <div className="space-y-1">
-                          <div className="text-white/50">Crew</div>
-                          <div className="font-medium text-white">{ship.crew}</div>
-                        </div>
-                        <div className="space-y-1">
-                          <div className="text-white/50">Cargo</div>
-                          <div className="font-medium text-white">{ship.cargo}</div>
-                        </div>
-                        <div className="space-y-1">
-                          <div className="text-white/50">Speed</div>
-                          <div className="font-medium text-white">{ship.speed}</div>
+
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="space-y-1">
+                            <div className="text-white/50">Price</div>
+                            <div className="font-medium text-white">
+                              {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-white/50">Crew</div>
+                            <div className="font-medium text-white">{ship.crew}</div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-white/50">Cargo</div>
+                            <div className="font-medium text-white">{ship.cargo}</div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-white/50">Speed</div>
+                            <div className="font-medium text-white">{ship.speed}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          )}
-          {visibleCount < filteredAndSortedShips.length && (
-            <div className="mt-8 flex justify-center">
-              <Button
-                variant="outline"
-                onClick={() => setVisibleCount(prev => prev + CHUNK_SIZE)}
-                className="gap-2"
-              >
-                Load More Ships
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </Button>
-            </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-4">
+                  <Button
+                    variant="outline"
+                    onClick={prevPage}
+                    disabled={currentPage === 0}
+                    className="gap-2"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  <span className="text-sm text-white">
+                    Page {currentPage + 1} of {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    onClick={nextPage}
+                    disabled={currentPage === totalPages - 1}
+                    className="gap-2"
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
