@@ -1,32 +1,26 @@
-import { useEffect, useRef } from "react";
-
 export function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 -z-10">
-      <svg
-        className="w-full h-full opacity-[0.2] mix-blend-soft-light"
-        viewBox="0 0 1000 1000"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <filter id="noise">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.25"
-            numOctaves="3"
-            stitchTiles="stitch"
-          >
-            <animate
-              attributeName="seed"
-              from="0"
-              to="100"
-              dur="3s"
-              repeatCount="indefinite"
-            />
-          </feTurbulence>
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#noise)" fill="white" />
-      </svg>
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-[#818589] via-[#9a9ea3] to-[#818589] opacity-50"
+        style={{
+          animation: "gradient 15s ease infinite",
+          backgroundSize: "400% 400%",
+        }}
+      />
+      <style jsx global>{`
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
     </div>
   );
 }
