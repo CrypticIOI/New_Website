@@ -82,6 +82,14 @@ export function ShipTable() {
         </Select>
       </div>
 
+       {(search || selectedClass !== "all") && (
+        <div className="text-sm text-primary/80">
+          Showing {filteredShips.length} ships
+          {selectedClass !== "all" && ` of class ${selectedClass}`}
+          {search && ` matching "${search}"`}
+        </div>
+      )}
+
       <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
         <Table>
           <TableHeader>

@@ -1,4 +1,5 @@
 import { ShipTable } from "@/components/ships/ship-table";
+import { ships } from "@/data/ships";
 
 export default function Ships() {
   return (
@@ -8,6 +9,9 @@ export default function Ships() {
         <p className="text-white/80">
           Browse and compare ships available in X4: Foundations
         </p>
+        <div className="text-sm text-primary/80">
+          Total ships in database: {ships.length}
+        </div>
       </div>
       <ShipTable />
     </div>
