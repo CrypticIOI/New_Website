@@ -11,6 +11,7 @@ import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { useMemo, useState, useCallback } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const shipClasses: ShipClass[] = [
   "Scout",
@@ -44,6 +45,7 @@ export function ShipTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedManufacturer, setSelectedManufacturer] = useState<string>("all");
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: null, direction: "asc" });
+  const [excludeNPCShips, setExcludeNPCShips] = useState(false);
 
   // Get unique manufacturers
   const manufacturers = useMemo(() => {
@@ -57,8 +59,10 @@ export function ShipTable() {
                           ship.manufacturer.toLowerCase().includes(search.toLowerCase());
       const matchesClass = selectedClass === "all" || ship.class === selectedClass;
       const matchesManufacturer = selectedManufacturer === "all" || ship.manufacturer === selectedManufacturer;
+      const passesNPCFilter = !excludeNPCShips || 
+                            (ship.manufacturer !== "Xenon" && ship.manufacturer !== "Kha'ak");
 
-      return matchesSearch && matchesClass && matchesManufacturer;
+      return matchesSearch && matchesClass && matchesManufacturer && passesNPCFilter;
     });
 
     // Sort if a sort field is selected
@@ -76,7 +80,7 @@ export function ShipTable() {
     }
 
     return filtered;
-  }, [search, selectedClass, selectedManufacturer, sortConfig]);
+  }, [search, selectedClass, selectedManufacturer, sortConfig, excludeNPCShips]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
@@ -151,12 +155,32 @@ export function ShipTable() {
         </div>
       </div>
 
+      {/* NPC Ships Filter */}
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="exclude-npc"
+          checked={excludeNPCShips}
+          onCheckedChange={(checked) => {
+            setExcludeNPCShips(checked as boolean);
+            resetPage();
+          }}
+          className="bg-white/5 border-white/10"
+        />
+        <label
+          htmlFor="exclude-npc"
+          className="text-sm font-medium text-white cursor-pointer"
+        >
+          Exclude Xenon and Kha'ak ships
+        </label>
+      </div>
+
       {/* Filter Summary */}
       <div className="text-sm text-primary/80">
         Showing {filteredAndSortedShips.length} ships
         {selectedClass !== "all" && ` of class ${selectedClass}`}
         {selectedManufacturer !== "all" && ` from ${selectedManufacturer}`}
         {search && ` matching "${search}"`}
+        {excludeNPCShips && ` (excluding Xenon and Kha'ak ships)`}
       </div>
 
       {/* Ship Table */}
