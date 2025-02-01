@@ -732,5 +732,100 @@ export const ships: Ship[] = [
     cargo: 2550,
     speed: 68,
     manufacturer: "Teladi Company"
+  },
+  // Additional Split Patriarchy Ships
+  {
+    id: "dragon_sentinel",
+    name: "Dragon Sentinel",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 215_750,
+    crew: 2,
+    cargo: 32,
+    speed: 230,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "wyvern_sentinel",
+    name: "Wyvern Sentinel",
+    class: "Corvette",
+    size: "M",
+    price: 975_000,
+    crew: 19,
+    cargo: 290,
+    speed: 178,
+    manufacturer: "Split Dynasty"
+  },
+
+  // Additional Terran Ships
+  {
+    id: "takoba",
+    name: "Takoba",
+    class: "Auxiliary",
+    size: "M",
+    price: 725_000,
+    crew: 12,
+    cargo: 1600,
+    speed: 150,
+    manufacturer: "Terran"
+  },
+  {
+    id: "shuriken",
+    name: "Shuriken",
+    class: "Scout",
+    size: "S",
+    price: 82_000,
+    crew: 1,
+    cargo: 42,
+    speed: 268,
+    manufacturer: "Terran"
+  },
+
+  // Free Families Ships
+  {
+    id: "free_families_asp",
+    name: "Free Families Asp",
+    class: "Scout",
+    size: "S",
+    price: 81_500,
+    crew: 2,
+    cargo: 46,
+    speed: 252,
+    manufacturer: "Free Families"
+  },
+  {
+    id: "free_families_python",
+    name: "Free Families Python",
+    class: "Fighter",
+    size: "S",
+    price: 160_000,
+    crew: 2,
+    cargo: 31,
+    speed: 257,
+    manufacturer: "Free Families"
+  },
+
+  // Additional Paranid Ships
+  {
+    id: "gorgon_sentinel",
+    name: "Gorgon Sentinel",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 205_000,
+    crew: 2,
+    cargo: 33,
+    speed: 232,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "medusa_vanguard",
+    name: "Medusa Vanguard",
+    class: "Frigate",
+    size: "M",
+    price: 1_525_000,
+    crew: 48,
+    cargo: 780,
+    speed: 142,
+    manufacturer: "Paranid"
   }
 ];
