@@ -7,7 +7,6 @@ import {
   Home,
 } from "lucide-react";
 
-
 const menuItems = [
   { icon: Home, label: "Home", href: "/" },
   { icon: Rocket, label: "Ships", href: "/ships" },
@@ -22,7 +21,7 @@ export function TopNav() {
     <div className="w-full px-4 pt-4">
       <nav className="rounded-sm border border-primary/20 bg-black/40 backdrop-blur-sm terminal-glow max-w-4xl mx-auto">
         <div className="container flex h-16 items-center justify-between px-4">
-          <div className="font-mono font-bold text-primary text-xl tracking-wider">
+          <div className="font-mono font-bold text-primary text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-primary/80 [text-shadow:0_0_30px_var(--primary-50)] antialiased">
             Exo.Trade
             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent mt-0.5" />
           </div>

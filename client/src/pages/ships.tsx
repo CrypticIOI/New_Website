@@ -112,8 +112,8 @@ export default function Ships() {
 
       if (searchLower) {
         filtered = filtered.filter(ship => 
-          ship.name.toLowerCase().includes(searchLower) || 
-          ship.manufacturer.toLowerCase().includes(searchLower)
+          ship.name.toLowerCase().includes(searchLower)
+          // Removed manufacturer search as requested
         );
       }
 
@@ -210,7 +210,7 @@ export default function Ships() {
           <div className="flex flex-wrap items-center gap-4">
             <div className="relative flex-1 min-w-[300px]">
               <Input
-                placeholder="Search ships or manufacturers..."
+                placeholder="Search ship names..."
                 value={search}
                 onChange={handleSearchChange}
                 className="bg-white/5 border-white/10 text-white placeholder:text-white/50 pr-10"
