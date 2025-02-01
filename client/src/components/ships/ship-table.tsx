@@ -1,13 +1,12 @@
 import {
   Table,
   TableBody,
-  TableCell,
-  TableRow,
 } from "@/components/ui/table";
 import { ships, type Ship, type ShipClass } from "@/data/ships";
 import { useMemo, useState, useCallback } from "react";
 import { ShipTableHeader, type SortConfig, type SortField } from "./ship-table-header";
 import { ShipFilters } from "./ship-filters";
+import { ShipTableRow } from "./ship-table-row";
 
 const ITEMS_PER_PAGE = 25;
 
@@ -34,22 +33,25 @@ export function ShipTable() {
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: null, direction: "asc" });
   const [excludeNPCShips, setExcludeNPCShips] = useState(false);
 
-  // Get unique manufacturers (memoized)
-  const manufacturers = useMemo(() => {
-    return Array.from(new Set(ships.map(ship => ship.manufacturer))).sort();
-  }, []);
+  // Memoize manufacturers list to prevent unnecessary recalculations
+  const manufacturers = useMemo(() => (
+    Array.from(new Set(ships.map(ship => ship.manufacturer))).sort()
+  ), []);
 
   // Memoize filter function
   const filterShip = useCallback((ship: Ship) => {
-    const matchesSearch = 
-      ship.name.toLowerCase().includes(search.toLowerCase()) ||
-      ship.manufacturer.toLowerCase().includes(search.toLowerCase());
-    const matchesClass = selectedClass === "all" || ship.class === selectedClass;
-    const matchesManufacturer = selectedManufacturer === "all" || ship.manufacturer === selectedManufacturer;
-    const passesNPCFilter = !excludeNPCShips || 
-      (ship.manufacturer !== "Xenon" && ship.manufacturer !== "Kha'ak");
+    const searchLower = search.toLowerCase();
+    if (searchLower) {
+      const matchesSearch = ship.name.toLowerCase().includes(searchLower) ||
+                          ship.manufacturer.toLowerCase().includes(searchLower);
+      if (!matchesSearch) return false;
+    }
 
-    return matchesSearch && matchesClass && matchesManufacturer && passesNPCFilter;
+    if (selectedClass !== "all" && ship.class !== selectedClass) return false;
+    if (selectedManufacturer !== "all" && ship.manufacturer !== selectedManufacturer) return false;
+    if (excludeNPCShips && (ship.manufacturer === "Xenon" || ship.manufacturer === "Kha'ak")) return false;
+
+    return true;
   }, [search, selectedClass, selectedManufacturer, excludeNPCShips]);
 
   // Memoize sort function
@@ -63,13 +65,14 @@ export function ShipTable() {
   // Memoize filtered and sorted ships
   const filteredAndSortedShips = useMemo(() => {
     const filtered = ships.filter(filterShip);
-    return sortConfig.field ? [...filtered].sort(sortShips) : filtered;
-  }, [filterShip, sortConfig, sortShips]);
+    return sortConfig.field ? filtered.sort(sortShips) : filtered;
+  }, [filterShip, sortConfig.field, sortShips]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedShips = filteredAndSortedShips.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  // Memoize paginated ships to prevent unnecessary calculations
+  const paginatedShips = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedShips.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedShips, currentPage]);
 
   // Reset page when filters change
   const resetPage = useCallback(() => setCurrentPage(1), []);
@@ -104,6 +107,9 @@ export function ShipTable() {
     resetPage();
   }, [resetPage]);
 
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredAndSortedShips.length / ITEMS_PER_PAGE);
+
   return (
     <div className="space-y-4">
       <ShipFilters
@@ -120,7 +126,6 @@ export function ShipTable() {
         totalShips={filteredAndSortedShips.length}
       />
 
-      {/* Ship Table */}
       <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm">
         <Table>
           <ShipTableHeader 
@@ -129,27 +134,12 @@ export function ShipTable() {
           />
           <TableBody>
             {paginatedShips.map((ship) => (
-              <TableRow 
-                key={ship.id} 
-                className="border-b border-white/10 transition-colors hover:bg-white/5"
-              >
-                <TableCell className="text-primary/90 font-medium">{ship.name}</TableCell>
-                <TableCell className="text-primary/90">{ship.class}</TableCell>
-                <TableCell className="text-primary/90">{ship.size}</TableCell>
-                <TableCell className="text-primary/90 text-right">
-                  {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
-                </TableCell>
-                <TableCell className="text-primary/90 text-right">{ship.crew}</TableCell>
-                <TableCell className="text-primary/90 text-right">{ship.cargo}</TableCell>
-                <TableCell className="text-primary/90 text-right">{ship.speed}</TableCell>
-                <TableCell className="text-primary/90">{ship.manufacturer}</TableCell>
-              </TableRow>
+              <ShipTableRow key={ship.id} ship={ship} />
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-4">
           <button
