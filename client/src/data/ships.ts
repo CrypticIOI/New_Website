@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Ship {
   id: string;
   name: string;
@@ -19,7 +21,10 @@ export type ShipClass =
   | "Destroyer"
   | "Carrier"
   | "Trader"
-  | "Miner";
+  | "Miner"
+  | "Auxiliary"
+  | "Gunship"
+  | "Transport";
 
 export const ships: Ship[] = [
   // Argon Federation Ships
@@ -43,6 +48,17 @@ export const ships: Ship[] = [
     crew: 2,
     cargo: 30,
     speed: 260,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "nova_vanguard",
+    name: "Nova Vanguard",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 198_450,
+    crew: 3,
+    cargo: 35,
+    speed: 235,
     manufacturer: "Argon Federation"
   },
   {
@@ -78,17 +94,39 @@ export const ships: Ship[] = [
     speed: 70,
     manufacturer: "Argon Federation"
   },
+  {
+    id: "hermes_vanguard",
+    name: "Hermes Vanguard",
+    class: "Transport",
+    size: "M",
+    price: 385_900,
+    crew: 12,
+    cargo: 2250,
+    speed: 135,
+    manufacturer: "Argon Federation"
+  },
 
   // Paranid Ships
   {
-    id: "perseus_vanguard",
-    name: "Perseus Vanguard",
+    id: "perseus_sentinel",
+    name: "Perseus Sentinel",
     class: "Scout",
     size: "S",
     price: 78_500,
     crew: 2,
     cargo: 45,
     speed: 250,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "perseus_vanguard",
+    name: "Perseus Vanguard",
+    class: "Scout",
+    size: "S",
+    price: 82_450,
+    crew: 2,
+    cargo: 48,
+    speed: 255,
     manufacturer: "Paranid"
   },
   {
@@ -111,6 +149,17 @@ export const ships: Ship[] = [
     crew: 85,
     cargo: 1250,
     speed: 95,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "odysseus_vanguard",
+    name: "Odysseus Vanguard",
+    class: "Carrier",
+    size: "XL",
+    price: 12_250_000,
+    crew: 360,
+    cargo: 2600,
+    speed: 65,
     manufacturer: "Paranid"
   },
 
@@ -149,6 +198,17 @@ export const ships: Ship[] = [
     manufacturer: "Split Dynasty"
   },
   {
+    id: "cobra_raider",
+    name: "Cobra Raider",
+    class: "Corvette",
+    size: "M",
+    price: 985_000,
+    crew: 20,
+    cargo: 300,
+    speed: 175,
+    manufacturer: "Split Dynasty"
+  },
+  {
     id: "phoenix_carrier",
     name: "Phoenix Carrier",
     class: "Carrier",
@@ -157,6 +217,17 @@ export const ships: Ship[] = [
     crew: 350,
     cargo: 2500,
     speed: 75,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "raptor_raider",
+    name: "Raptor Raider",
+    class: "Scout",
+    size: "S",
+    price: 82_450,
+    crew: 1,
+    cargo: 45,
+    speed: 255,
     manufacturer: "Split Dynasty"
   },
 
@@ -205,6 +276,74 @@ export const ships: Ship[] = [
     speed: 120,
     manufacturer: "Teladi Company"
   },
+  {
+    id: "osprey_sentinel",
+    name: "Osprey Sentinel",
+    class: "Fighter",
+    size: "S",
+    price: 145_800,
+    crew: 2,
+    cargo: 35,
+    speed: 250,
+    manufacturer: "Teladi Company"
+  },
+    {
+    id: "condor_hauler",
+    name: "Condor Hauler",
+    class: "Transport",
+    size: "L",
+    price: 3_250_000,
+    crew: 30,
+    cargo: 7000,
+    speed: 115,
+    manufacturer: "Teladi Company"
+  },
+
+  // Terran Ships
+  {
+    id: "katana",
+    name: "Katana",
+    class: "Fighter",
+    size: "S",
+    price: 155_000,
+    crew: 2,
+    cargo: 25,
+    speed: 270,
+    manufacturer: "Terran"
+  },
+  {
+    id: "kukri",
+    name: "Kukri",
+    class: "Heavy Fighter",
+    size: "S",
+    price: 225_000,
+    crew: 2,
+    cargo: 30,
+    speed: 240,
+    manufacturer: "Terran"
+  },
+  {
+    id: "osaka",
+    name: "Osaka",
+    class: "Destroyer",
+    size: "L",
+    price: 5_250_000,
+    crew: 90,
+    cargo: 1400,
+    speed: 85,
+    manufacturer: "Terran"
+  },
+  {
+    id: "tokyo",
+    name: "Tokyo",
+    class: "Carrier",
+    size: "XL",
+    price: 13_500_000,
+    crew: 380,
+    cargo: 2800,
+    speed: 60,
+    manufacturer: "Terran"
+  },
 
   // Mining Ships
   {
@@ -239,5 +378,216 @@ export const ships: Ship[] = [
     cargo: 2400,
     speed: 130,
     manufacturer: "Split Dynasty"
+  },
+  {
+    id: "mineral_miner",
+    name: "Mineral Miner",
+    class: "Miner",
+    size: "M",
+    price: 405_000,
+    crew: 14,
+    cargo: 2600,
+    speed: 125,
+    manufacturer: "Teladi Company"
+  },
+
+  // Xenon Ships
+  {
+    id: "xenon_p",
+    name: "Xenon P",
+    class: "Fighter",
+    size: "S",
+    price: 0, // Cannot be purchased
+    crew: 0,
+    cargo: 0,
+    speed: 280,
+    manufacturer: "Xenon"
+  },
+  {
+    id: "xenon_n",
+    name: "Xenon N",
+    class: "Destroyer",
+    size: "L",
+    price: 0, // Cannot be purchased
+    crew: 0,
+    cargo: 0,
+    speed: 100,
+    manufacturer: "Xenon"
+  },
+  {
+    id: "xenon_k",
+    name: "Xenon K",
+    class: "Carrier",
+    size: "XL",
+    price: 0, // Cannot be purchased
+    crew: 0,
+    cargo: 0,
+    speed: 70,
+    manufacturer: "Xenon"
+  },
+  // Additional Argon Ships
+  {
+    id: "ares_vanguard",
+    name: "Ares Vanguard",
+    class: "Gunship",
+    size: "M",
+    price: 1_250_000,
+    crew: 25,
+    cargo: 450,
+    speed: 160,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "atlas_vanguard",
+    name: "Atlas Vanguard",
+    class: "Transport",
+    size: "L",
+    price: 2_950_000,
+    crew: 28,
+    cargo: 6800,
+    speed: 125,
+    manufacturer: "Argon Federation"
+  },
+
+  // Additional Paranid Ships
+  {
+    id: "theseus_sentinel",
+    name: "Theseus Sentinel",
+    class: "Gunship",
+    size: "M",
+    price: 1_350_000,
+    crew: 28,
+    cargo: 480,
+    speed: 155,
+    manufacturer: "Paranid"
+  },
+  {
+    id: "hercules_sentinel",
+    name: "Hercules Sentinel",
+    class: "Transport",
+    size: "L",
+    price: 3_150_000,
+    crew: 32,
+    cargo: 7200,
+    speed: 120,
+    manufacturer: "Paranid"
+  },
+
+  // Additional Split Ships
+  {
+    id: "panther_raider",
+    name: "Panther Raider",
+    class: "Gunship",
+    size: "M",
+    price: 1_450_000,
+    crew: 30,
+    cargo: 420,
+    speed: 170,
+    manufacturer: "Split Dynasty"
+  },
+  {
+    id: "mammoth_raider",
+    name: "Mammoth Raider",
+    class: "Transport",
+    size: "L",
+    price: 3_350_000,
+    crew: 35,
+    cargo: 7500,
+    speed: 115,
+    manufacturer: "Split Dynasty"
+  },
+
+  // Additional Terran Ships
+  {
+    id: "gladius",
+    name: "Gladius",
+    class: "Scout",
+    size: "S",
+    price: 85_000,
+    crew: 1,
+    cargo: 40,
+    speed: 265,
+    manufacturer: "Terran"
+  },
+  {
+    id: "syndicate",
+    name: "Syndicate",
+    class: "Auxiliary",
+    size: "M",
+    price: 750_000,
+    crew: 15,
+    cargo: 1800,
+    speed: 145,
+    manufacturer: "Terran"
+  },
+  {
+    id: "kyoto",
+    name: "Kyoto",
+    class: "Transport",
+    size: "L",
+    price: 3_450_000,
+    crew: 40,
+    cargo: 8000,
+    speed: 110,
+    manufacturer: "Terran"
+  },
+
+  // ZYA Ships
+  {
+    id: "asp_raider",
+    name: "Asp Raider",
+    class: "Scout",
+    size: "S",
+    price: 79_500,
+    crew: 2,
+    cargo: 45,
+    speed: 250,
+    manufacturer: "ZYA"
+  },
+  {
+    id: "python_sentinel",
+    name: "Python Sentinel",
+    class: "Fighter",
+    size: "S",
+    price: 158_000,
+    crew: 2,
+    cargo: 30,
+    speed: 255,
+    manufacturer: "ZYA"
+  },
+  {
+    id: "rattlesnake",
+    name: "Rattlesnake",
+    class: "Destroyer",
+    size: "L",
+    price: 5_150_000,
+    crew: 95,
+    cargo: 1350,
+    speed: 88,
+    manufacturer: "ZYA"
+  },
+
+  // Additional Xenon Ships
+  {
+    id: "xenon_m",
+    name: "Xenon M",
+    class: "Gunship",
+    size: "M",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 190,
+    manufacturer: "Xenon"
+  },
+  {
+    id: "xenon_i",
+    name: "Xenon I",
+    class: "Fighter",
+    size: "S",
+    price: 0,
+    crew: 0,
+    cargo: 0,
+    speed: 290,
+    manufacturer: "Xenon"
   }
 ];
