@@ -8,6 +8,6 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-[#f0f2f5] text-foreground;
   }
 }

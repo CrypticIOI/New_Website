@@ -4,15 +4,15 @@ export function AnimatedBackground() {
   return (
     <div className="fixed inset-0 -z-10">
       <svg
-        className="w-full h-full opacity-[0.15]"
+        className="w-full h-full opacity-[0.3]"
         viewBox="0 0 1000 1000"
         xmlns="http://www.w3.org/2000/svg"
       >
         <filter id="noise">
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.65"
-            numOctaves="3"
+            baseFrequency="0.3"
+            numOctaves="4"
             stitchTiles="stitch"
           >
             <animate
