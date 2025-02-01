@@ -435,5 +435,60 @@ export const ships: Ship[] = [
     cargo: 33600,
     speed: 103,
     manufacturer: "Teladi Company"
+  },
+  {
+    id: "condor_vanguard",
+    name: "Condor Vanguard",
+    class: "Carrier",
+    size: "XL",
+    price: 11_170_550,
+    crew: 135,
+    cargo: 28000,
+    speed: 116,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "cormorant_vanguard",
+    name: "Cormorant Vanguard",
+    class: "Transport",
+    size: "M",
+    price: 418_830,
+    crew: 17,
+    cargo: 7900,
+    speed: 113,
+    manufacturer: "Teladi Company"
+  },
+  {
+    id: "courier_mineral",
+    name: "Courier (Mineral)",
+    class: "Miner",
+    size: "S",
+    price: 83_265,
+    crew: 3,
+    cargo: 2600,
+    speed: 265,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "courier_sentinel",
+    name: "Courier Sentinel",
+    class: "Transport",
+    size: "S",
+    price: 185_980,
+    crew: 4,
+    cargo: 2352,
+    speed: 198,
+    manufacturer: "Argon Federation"
+  },
+  {
+    id: "courier_vanguard",
+    name: "Courier Vanguard",
+    class: "Transport",
+    size: "S",
+    price: 155_760,
+    crew: 5,
+    cargo: 1960,
+    speed: 215,
+    manufacturer: "Argon Federation"
   }
 ];
