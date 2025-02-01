@@ -15,9 +15,6 @@ export default function Stations() {
         <CardContent className="flex flex-col items-center justify-center py-12 text-center">
           <Construction className="h-12 w-12 text-primary mb-4" />
           <h2 className="text-xl font-bold text-white mb-2">Coming Soon</h2>
-          <p className="text-white/70 max-w-md">
-            The Station Calculator is currently under development. Check back soon for comprehensive station building and resource management tools.
-          </p>
         </CardContent>
       </Card>
     </div>
