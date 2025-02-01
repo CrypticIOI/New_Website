@@ -19,14 +19,14 @@ const ROW_HEIGHT = 48;
 const TABLE_HEIGHT = 600;
 
 const COLUMNS = [
-  { key: 'name', label: 'Name', width: '20%', align: 'left', sortable: false },
-  { key: 'class', label: 'Class', width: '15%', align: 'left', sortable: false },
-  { key: 'size', label: 'Size', width: '10%', align: 'left', sortable: false },
-  { key: 'price', label: 'Price', width: '12%', align: 'right', sortable: true },
-  { key: 'crew', label: 'Crew', width: '10%', align: 'right', sortable: true },
-  { key: 'cargo', label: 'Cargo', width: '12%', align: 'right', sortable: true },
-  { key: 'speed', label: 'Speed', width: '10%', align: 'right', sortable: true },
-  { key: 'manufacturer', label: 'Manufacturer', width: '11%', align: 'left', sortable: false },
+  { key: 'name', label: 'Name', width: 240, align: 'left', sortable: false },
+  { key: 'class', label: 'Class', width: 180, align: 'left', sortable: false },
+  { key: 'size', label: 'Size', width: 120, align: 'left', sortable: false },
+  { key: 'price', label: 'Price', width: 144, align: 'right', sortable: true },
+  { key: 'crew', label: 'Crew', width: 120, align: 'right', sortable: true },
+  { key: 'cargo', label: 'Cargo', width: 144, align: 'right', sortable: true },
+  { key: 'speed', label: 'Speed', width: 120, align: 'right', sortable: true },
+  { key: 'manufacturer', label: 'Manufacturer', width: 132, align: 'left', sortable: false },
 ];
 
 const shipClasses: ShipClass[] = [
@@ -127,6 +127,9 @@ export default function Ships() {
       <ArrowDown className="ml-2 h-4 w-4" />;
   };
 
+  // Calculate total table width
+  const totalWidth = COLUMNS.reduce((acc, col) => acc + col.width, 0);
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -217,114 +220,110 @@ export default function Ships() {
           className="rounded-md border border-white/10 bg-black/40 backdrop-blur-sm"
           style={{ height: TABLE_HEIGHT, overflowY: "auto" }}
         >
-          <Table aria-label="Ships database">
-            <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
-              <TableRow className="border-b border-white/10">
-                {COLUMNS.map(column => (
-                  <TableHead 
-                    key={column.key}
-                    className="text-white/70"
-                    style={{ 
-                      width: column.width,
-                      textAlign: column.align as any,
-                      cursor: column.sortable ? 'pointer' : 'default'
-                    }}
-                    onClick={() => {
-                      if (column.sortable) {
-                        handleSort(column.key as SortField);
-                      }
-                    }}
-                    role={column.sortable ? "button" : undefined}
-                    tabIndex={column.sortable ? 0 : undefined}
-                    onKeyDown={(e) => {
-                      if (column.sortable && (e.key === 'Enter' || e.key === ' ')) {
-                        e.preventDefault();
-                        handleSort(column.key as SortField);
-                      }
-                    }}
-                    aria-sort={
-                      column.sortable
-                        ? sortConfig.field === column.key
-                          ? sortConfig.direction
-                          : 'none'
-                        : undefined
-                    }
-                  >
-                    <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : ''}`}>
-                      {column.label}
-                      {column.sortable && getSortIcon(column.key as SortField)}
-                    </div>
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <tr>
-                  <td colSpan={8} className="h-[400px]">
-                    <div className="flex items-center justify-center h-full">
-                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan={8} className="p-0">
-                    <div 
+          <div style={{ width: totalWidth, minWidth: '100%' }}>
+            <Table aria-label="Ships database">
+              <TableHeader className="sticky top-0 bg-black/60 backdrop-blur-sm z-10">
+                <TableRow className="border-b border-white/10">
+                  {COLUMNS.map(column => (
+                    <TableHead 
+                      key={column.key}
+                      className="text-white/70"
                       style={{ 
-                        height: `${rowVirtualizer.getTotalSize()}px`,
-                        width: '100%',
-                        position: 'relative'
+                        width: column.width,
+                        textAlign: column.align as any,
+                        cursor: column.sortable ? 'pointer' : 'default',
+                        padding: '12px 16px',
                       }}
+                      onClick={() => {
+                        if (column.sortable) {
+                          handleSort(column.key as SortField);
+                        }
+                      }}
+                      role={column.sortable ? "button" : undefined}
+                      tabIndex={column.sortable ? 0 : undefined}
+                      onKeyDown={(e) => {
+                        if (column.sortable && (e.key === 'Enter' || e.key === ' ')) {
+                          e.preventDefault();
+                          handleSort(column.key as SortField);
+                        }
+                      }}
+                      aria-sort={
+                        column.sortable
+                          ? sortConfig.field === column.key
+                            ? sortConfig.direction === 'asc' ? 'ascending' : 'descending'
+                            : 'none'
+                          : undefined
+                      }
                     >
-                      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const ship = filteredAndSortedShips[virtualRow.index];
-                        return (
-                          <TableRow
-                            key={ship.id}
-                            className="border-b border-white/10 transition-colors hover:bg-white/5"
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              width: '100%',
-                              height: `${ROW_HEIGHT}px`,
-                              transform: `translateY(${virtualRow.start}px)`,
-                            }}
-                          >
-                            <TableCell style={{ width: COLUMNS[0].width }} className="text-primary/90 font-medium">
-                              {ship.name}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[1].width }} className="text-primary/90">
-                              {ship.class}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[2].width }} className="text-primary/90">
-                              {ship.size}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[3].width }} className="text-primary/90 text-right">
-                              {ship.price > 0 ? ship.price.toLocaleString() : 'N/A'}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[4].width }} className="text-primary/90 text-right">
-                              {ship.crew}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[5].width }} className="text-primary/90 text-right">
-                              {ship.cargo}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[6].width }} className="text-primary/90 text-right">
-                              {ship.speed}
-                            </TableCell>
-                            <TableCell style={{ width: COLUMNS[7].width }} className="text-primary/90">
-                              {ship.manufacturer}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </TableBody>
-          </Table>
+                      <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : ''}`}>
+                        {column.label}
+                        {column.sortable && getSortIcon(column.key as SortField)}
+                      </div>
+                    </TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={8} className="h-[400px]">
+                      <div className="flex items-center justify-center h-full">
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="p-0">
+                      <div 
+                        style={{ 
+                          height: `${rowVirtualizer.getTotalSize()}px`,
+                          width: '100%',
+                          position: 'relative'
+                        }}
+                      >
+                        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                          const ship = filteredAndSortedShips[virtualRow.index];
+                          return (
+                            <TableRow
+                              key={ship.id}
+                              className="border-b border-white/10 transition-colors hover:bg-white/5"
+                              style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: `${ROW_HEIGHT}px`,
+                                transform: `translateY(${virtualRow.start}px)`,
+                              }}
+                            >
+                              {COLUMNS.map((column) => (
+                                <TableCell
+                                  key={column.key}
+                                  style={{ 
+                                    width: column.width,
+                                    padding: '12px 16px',
+                                    textAlign: column.align as any
+                                  }}
+                                  className="text-primary/90"
+                                >
+                                  {column.key === 'price' 
+                                    ? ship.price > 0 
+                                      ? ship.price.toLocaleString() 
+                                      : 'N/A'
+                                    : ship[column.key as keyof Ship]}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          );
+                        })}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
     </div>
