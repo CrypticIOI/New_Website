@@ -23,7 +23,7 @@ export function TopNav() {
       <nav className="rounded-sm border border-primary/20 bg-black/40 backdrop-blur-sm terminal-glow max-w-4xl mx-auto">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="font-mono font-bold text-primary text-xl tracking-wider">
-            CRYPTCORP
+            Exo.Trade
             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent mt-0.5" />
           </div>
           <div className="flex-1 flex justify-center space-x-6">
